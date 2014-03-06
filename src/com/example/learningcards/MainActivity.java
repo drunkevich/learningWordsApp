@@ -1,5 +1,6 @@
 package com.example.learningcards;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import android.os.Bundle;
@@ -7,24 +8,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v4.view.MotionEventCompat;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.GestureDetector;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.TranslateAnimation;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -39,50 +31,55 @@ public class MainActivity extends Activity {
 	private TextView[] mTextView = new TextView[2];
 	private GestureDetector mGestureDetector;
 	private boolean face = true;
-	
+	private ArrayList<String> dbTags = new ArrayList<String>();
+	private String currentTag;
+	private int currentQ=0;
+	private boolean isRefreshNeed;
+	private Spinner spinnerQuality;
+	private Spinner spinnerTag;
+	private String dbgTag = "dbgTag";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
 		mDbHelper = new CardsDatabase(this);
-		db = mDbHelper.getReadableDatabase();
+		db = mDbHelper.getWritableDatabase();
 		mFlipper = (ViewFlipper) findViewById(R.id.view_flipper);
 		mTextView[0] = (TextView) findViewById(R.id.textView1);
 		mTextView[1] = (TextView) findViewById(R.id.textView2);
 		mFlipper.setBackgroundColor(getResources().getColor(R.color.bcgrd_word));
-		cursor = readCards();
 		
-		try {
-			cursor.moveToPosition(random.nextInt(cursor.getCount()));
-			mTextView[0].setText(cursor.getString(1));
-		} catch (Exception e) {
-			mTextView[0].setText("create cards first");
-		}
+		isRefreshNeed = true;
+		
+		
 		mGestureDetector = new GestureDetector(this,
 				new GestureDetector.SimpleOnGestureListener() {
 					@Override
 					public boolean onFling(MotionEvent e1, MotionEvent e2,
 							float velocityX, float velocityY) {
 						
-						mFlipper.setInAnimation(inFromRightAnimation());
+
 						mFlipper.setOutAnimation(outToLeftAnimation());
 						
 						cursor.moveToPosition(random.nextInt(cursor.getCount()));
-						
+						MainActivity.this.debuglog(cursor);
+						spinnerQuality.setSelection(Integer.parseInt(cursor.getString(4))-1);
+						spinnerTag.setSelection(dbTags.indexOf(cursor.getString(3)));
 						mTextView[1-mFlipper.getDisplayedChild()].setText(cursor.getString(1));
 						mFlipper.getChildAt(1-mFlipper.getDisplayedChild()).setBackgroundColor(getResources().getColor(R.color.bcgrd_word));
 						mFlipper.showPrevious();
 						
 						return true;
 					}
+					
 					@Override
 					public boolean onDown(MotionEvent e) {
 						return true;
 					}
 					@Override
 					public boolean onSingleTapConfirmed(MotionEvent e) {
-						
+						debuglog(cursor);
 						mFlipper.setInAnimation(inFromRightAnimation());
 						mFlipper.setOutAnimation(outToLeftAnimation());
 						if (face) {
@@ -102,21 +99,52 @@ public class MainActivity extends Activity {
 					}
 				});
 		
-		//TODO
-		Spinner spinner = (Spinner) findViewById(R.id.spinner_quality);
-		// Create an ArrayAdapter using the string array and a default spinner layout
-		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+		
+		spinnerQuality = (Spinner) findViewById(R.id.spinner_quality);
+		ArrayAdapter<CharSequence> adapterQ = ArrayAdapter.createFromResource(this,
 		        R.array.Qualities, android.R.layout.simple_spinner_item);
-		// Specify the layout to use when the list of choices appears
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		// Apply the adapter to the spinner
-		spinner.setAdapter(adapter);
+		adapterQ.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinnerQuality.setAdapter(adapterQ);
+		
+		spinnerTag = (Spinner) findViewById(R.id.spinner_tag);
+		
+		
+		
 		
 	}
 	
+	@Override
+	protected void onStart() {
+		refreshVisibleData(false);
+		showCard();
+		super.onStart();
+	}
 	
+	private void showCard() {
+		Log.d(dbgTag, "showCard()");
+		if (cursor.getCount()>0) {
+		cursor.moveToPosition(random.nextInt(cursor.getCount()));
+		debuglog(cursor);
+		mTextView[0].setText(cursor.getString(1));
+		spinnerQuality.setSelection(Integer.parseInt(cursor.getString(4))-1);
+		spinnerTag.setSelection(dbTags.indexOf(cursor.getString(3)));
+	} else {
+		//TODO
+		Log.d(dbgTag, "no cards");
+	}
+		
+	}
+
+	private void debuglog(Cursor c) {
+		
+		String msg = c.getString(0)+" "+c.getString(1)+" "+c.getString(2)+" "+c.getString(3)+" "+c.getString(4);
+		Log.d("current card log", msg);
+		
+	}
+
 	@Override 
 	public boolean onTouchEvent(MotionEvent event) {
+		//Log.d(dbgTag, "on touch");
 		return mGestureDetector.onTouchEvent(event);
 	}
 
@@ -150,14 +178,29 @@ public class MainActivity extends Activity {
 	protected void onStop() {
 
 		db.close();
-
+//TODO ?
 		super.onStop();
 
 	}
 	
-	private Cursor readCards() {
+	private Cursor readCards(String currentTag2, int currentQ2) {
+		if ((currentTag2==null) && (currentQ2==0)){
 		return db.query(CardsDatabase.TABLE_NAME,
 				CardsDatabase.columns, null, new String[] {}, null, null, null);
+		} else if ((currentTag2!=null) && (currentQ2==0)) {
+			return db.query(CardsDatabase.TABLE_NAME,
+					CardsDatabase.columns, CardsDatabase.TAG+" = "+currentTag2, new String[] {}, null, null, null);
+
+		} else if ((currentTag2==null) && (currentQ2!=0)) {
+			return db.query(CardsDatabase.TABLE_NAME,
+					CardsDatabase.columns, CardsDatabase.QUALITY+" = "+currentQ2, new String[] {}, null, null, null);
+
+		} else {
+			return db.query(CardsDatabase.TABLE_NAME,
+					CardsDatabase.columns, CardsDatabase.TAG+" = "+currentTag2+" and "+CardsDatabase.QUALITY+" = "+currentQ2, new String[] {}, null, null, null);
+
+		}
+		
 	}
 	
 	
@@ -182,4 +225,42 @@ public class MainActivity extends Activity {
 		outtoLeft.setInterpolator(new LinearInterpolator());
 		return outtoLeft;
 	}
+	
+	protected void onSaveInstanceState(Bundle outState) {
+	    super.onSaveInstanceState(outState);
+	    outState.putString("currentTag", currentTag);
+	    outState.putInt("currentQ", currentQ);
+	  }
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+	    super.onRestoreInstanceState(savedInstanceState);
+	    currentTag = savedInstanceState.getString("currentTag");
+	    currentQ = savedInstanceState.getInt("currentQ");
+	  }
+	
+	private void refreshVisibleData(boolean forced) {
+		if (forced || isRefreshNeed) {
+			cursor = readCards(currentTag,currentQ);
+			dbTags = readTags();			
+			ArrayAdapter<CharSequence> adapterT = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
+			
+			for (String t:dbTags) {
+				adapterT.add(t);
+			}
+			adapterT.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			spinnerTag.setAdapter(adapterT);
+			isRefreshNeed = false;
+		}
+	}
+
+	private ArrayList<String> readTags() {
+		ArrayList<String> result = new ArrayList<String>();
+		Cursor c = db.rawQuery("SELECT DISTINCT "+CardsDatabase.TAG+" from "+CardsDatabase.TABLE_NAME, null);
+		c.moveToFirst();
+		result.add(c.getString(0));
+		while (c.moveToNext()) {
+			result.add(c.getString(0));	
+		}
+		return result;
+	}
+	
 }

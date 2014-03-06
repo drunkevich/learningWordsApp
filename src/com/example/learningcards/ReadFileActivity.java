@@ -2,11 +2,7 @@ package com.example.learningcards;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 import android.os.Bundle;
 import android.os.Environment;
 import android.app.Activity;
@@ -111,17 +107,17 @@ public class ReadFileActivity extends Activity {
 			        	  if ((l>2)&&(s[2].length()>0)) 
 				        	  values.put(CardsDatabase.TAG, s[2]);
 			        	  else
-				        	  values.put(CardsDatabase.TAG, CardsDatabase.DEFAULT_TAG);
+				        	  values.put(CardsDatabase.TAG, dTag);
 			        	  
 			        	  if ((l>3)&&(s[3].length()>0))
 			        		  try {
 			        			  int q = Integer.parseInt(s[3]);
 			        			  values.put(CardsDatabase.QUALITY, q);
 			        		  } catch (Exception e) {
-			        			  values.put(CardsDatabase.QUALITY, CardsDatabase.DEFAULT_QUALITY);
+			        			  values.put(CardsDatabase.QUALITY, dQuality);
 			        		  }
 			        	  else 
-			        		  values.put(CardsDatabase.QUALITY, CardsDatabase.DEFAULT_QUALITY);
+			        		  values.put(CardsDatabase.QUALITY, dQuality);
 			        	  db.insert(CardsDatabase.TABLE_NAME, null, values);
 			          }
 			          
