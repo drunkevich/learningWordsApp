@@ -203,7 +203,6 @@ public class MainActivity extends Activity {
 		
 	}
 	
-	
 	private Animation inFromRightAnimation() {
 		Animation inFromRight = new TranslateAnimation(
 				Animation.RELATIVE_TO_PARENT, +1.0f,
@@ -251,7 +250,7 @@ public class MainActivity extends Activity {
 			isRefreshNeed = false;
 		}
 	}
-
+//git test
 	private ArrayList<String> readTags() {
 		ArrayList<String> result = new ArrayList<String>();
 		Cursor c = db.rawQuery("SELECT DISTINCT "+CardsDatabase.TAG+" from "+CardsDatabase.TABLE_NAME, null);
