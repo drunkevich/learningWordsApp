@@ -5,6 +5,6 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/action_settings"/>
-    <item android:id="@+id/item1" android:title="@string/editCardDB"></item>
-
+    <item android:id="@+id/editCards" android:title="@string/editCardDB"></item>
+	<item android:id="@+id/select" android:title="@string/selectCards"></item>
 </menu>

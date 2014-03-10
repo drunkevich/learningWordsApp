@@ -30,5 +30,5 @@
         <item>4</item>
         <item>5</item>
     </string-array>
-
+	<string name="selectCards">Select cards</string>
 </resources>

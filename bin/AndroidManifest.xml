@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Black.NoTitleBar" >
         <activity
-            android:name="com.example.learningcards.MainActivity"
+            android:name="drankoDmitry.learningcards.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.learningcards.CardEditActivity"
+            android:name="drankoDmitry.learningcards.CardEditActivity"
             android:label="@string/title_activity_card_edit"
             android:parentActivityName="android.app.ListActivity" >
             <meta-data
@@ -41,15 +41,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.learningcards.AddingCardManuallyActivity"
+            android:name="drankoDmitry.learningcards.AddingCardManuallyActivity"
             android:label="@string/title_activity_adding_card_manually"
-            android:parentActivityName="com.example.learningcards.MainActivity" >
+            android:parentActivityName="drankoDmitry.learningcards.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.learningcards.MainActivity" />
         </activity>
         <activity
-            android:name="com.example.learningcards.ReadFileActivity"
+            android:name="drankoDmitry.learningcards.ReadFileActivity"
             android:label="@string/title_activity_read_file" >
         </activity>
     </application>
