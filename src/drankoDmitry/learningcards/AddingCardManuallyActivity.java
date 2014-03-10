@@ -1,6 +1,6 @@
 package drankoDmitry.learningcards;
 
-import com.example.learningcards.R;
+import drankoDmitry.learningcards.R;
 
 import android.os.Bundle;
 import android.app.Activity;

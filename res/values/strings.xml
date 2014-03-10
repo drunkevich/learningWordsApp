@@ -23,6 +23,7 @@
     <string name="force_tag">set tag to all (optional)</string>
     <string name="forcedQuality">set quality to all (optional)</string>
     <string name="import_file">import file</string>
+
     <string-array name="Qualities">
         <item>1</item>
         <item>2</item>
@@ -30,5 +31,9 @@
         <item>4</item>
         <item>5</item>
     </string-array>
-	<string name="selectCards">Select cards</string>
+
+    <string name="selectCards">Select cards</string>
+    <string name="title_activity_deck_chooser">DeckChooser</string>
+    <string name="ok">ok</string>
+
 </resources>

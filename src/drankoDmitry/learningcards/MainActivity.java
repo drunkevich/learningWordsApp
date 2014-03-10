@@ -3,13 +3,13 @@ package drankoDmitry.learningcards;
 import java.util.ArrayList;
 import java.util.Random;
 
-import com.example.learningcards.R;
+import drankoDmitry.learningcards.R;
+
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
@@ -39,6 +39,7 @@ public class MainActivity extends Activity {
 	private Spinner spinnerQuality;
 	private Spinner spinnerTag;
 	private String dbgTag = "dbgTag";
+	private int SELECT_DECK_REQUEST_CODE = 1;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -164,7 +165,8 @@ public class MainActivity extends Activity {
 	            startActivity(new Intent(MainActivity.this,CardEditActivity.class));	            
 	            return true;
 	        case R.id.select:
-	        	//TODO
+	    		Intent intent = new Intent(this,DeckChooser.class);
+	    		startActivityForResult(intent, SELECT_DECK_REQUEST_CODE);
 	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
@@ -179,7 +181,6 @@ public class MainActivity extends Activity {
 	protected void onDestroy() {
 
 		CardsDatabase.closedb();
-//TODO ?
 		super.onDestroy();
 
 	}
@@ -238,6 +239,21 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+		
+		if (requestCode == SELECT_DECK_REQUEST_CODE) {
+			if (resultCode == RESULT_OK) {
+				cursor = CardsDatabase.readCards(data.getStringExtra("tag"), data.getIntExtra("quality", 0));
+				if (cursor.getCount()>0) {
+					refreshVisibleData(true);
+				} else {
+					//TODO
+				}
+			}
+		}
+
+	}
 	
 }

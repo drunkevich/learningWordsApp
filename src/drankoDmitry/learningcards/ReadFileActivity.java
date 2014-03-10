@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 
-import com.example.learningcards.R;
+import drankoDmitry.learningcards.R;
 
 import android.os.Bundle;
 import android.os.Environment;
