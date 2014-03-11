@@ -5,7 +5,6 @@ import drankoDmitry.learningcards.R;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
 import android.text.Editable;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class AddingCardManuallyActivity extends Activity {
 	
@@ -68,6 +68,11 @@ public class AddingCardManuallyActivity extends Activity {
 						values.put(CardsDatabase.QUALITY, CardsDatabase.DEFAULT_QUALITY);
 					
 					CardsDatabase.insert(values);
+					
+					Toast.makeText(AddingCardManuallyActivity.this, "success", Toast.LENGTH_SHORT).show();
+					
+					mWord.clear();
+					mTranslation.clear();
 				}
 			}
 		});

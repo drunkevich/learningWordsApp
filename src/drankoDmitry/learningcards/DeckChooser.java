@@ -26,19 +26,19 @@ public class DeckChooser extends Activity {
 		
 		spinnerQuality = (Spinner) findViewById(R.id.dc_q);
 		ArrayAdapter<CharSequence> adapterQ = ArrayAdapter.createFromResource(this,
-		        R.array.Qualities, android.R.layout.simple_spinner_item);
-		adapterQ.add("-");
+		        R.array.Qualities_, android.R.layout.simple_spinner_item);
+		
 		adapterQ.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinnerQuality.setAdapter(adapterQ);
 		
 		spinnerTag = (Spinner) findViewById(R.id.dc_tag);
 		ArrayList<String> dbTags = CardsDatabase.readTags();			
 		ArrayAdapter<CharSequence> adapterT = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
-	
+		adapterT.add("-");
 		for (String t:dbTags) {
 			adapterT.add(t);
 		}
-		adapterT.add("-");
+		
 		adapterT.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinnerTag.setAdapter(adapterT);
 		

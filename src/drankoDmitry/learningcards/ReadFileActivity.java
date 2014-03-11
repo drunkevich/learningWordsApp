@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.app.Activity;
 import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
 import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;

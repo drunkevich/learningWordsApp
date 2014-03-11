@@ -8,6 +8,7 @@ import drankoDmitry.learningcards.R;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.util.Log;
@@ -95,10 +96,7 @@ public class MainActivity extends Activity {
 						
 						return true;
 					}
-					@Override
-					public void onLongPress(MotionEvent e) {
-						
-					}
+					
 				});
 		
 		
@@ -143,8 +141,15 @@ public class MainActivity extends Activity {
 
 	@Override 
 	public boolean onTouchEvent(MotionEvent event) {
-		//Log.d(dbgTag, "on touch");
-		return mGestureDetector.onTouchEvent(event);
+		Log.d(dbgTag, "on touch");
+		if (cursor.getCount()>0) {
+			return mGestureDetector.onTouchEvent(event);
+		} else {
+			Intent intent = new Intent(MainActivity.this,CardEditActivity.class);
+			intent.putExtra("force alert", true);
+			startActivity(intent);	  
+			return false;
+		}
 	}
 
  
@@ -162,11 +167,13 @@ public class MainActivity extends Activity {
 		
 	    switch (item.getItemId()) {
 	        case R.id.editCards:
-	            startActivity(new Intent(MainActivity.this,CardEditActivity.class));	            
+	        	Intent intent1 = new Intent(MainActivity.this,CardEditActivity.class);
+				intent1.putExtra("force alert", false);
+				startActivity(intent1);	            
 	            return true;
 	        case R.id.select:
-	    		Intent intent = new Intent(this,DeckChooser.class);
-	    		startActivityForResult(intent, SELECT_DECK_REQUEST_CODE);
+	    		Intent intent2 = new Intent(this,DeckChooser.class);
+	    		startActivityForResult(intent2, SELECT_DECK_REQUEST_CODE);
 	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
@@ -234,7 +241,16 @@ public class MainActivity extends Activity {
 				spinnerTag.setAdapter(adapterT);
 				isRefreshNeed = false;
 			} else {
-				Log.d(dbgTag, "no cards");
+				Log.d(dbgTag, "no cards selected");
+				if (CardsDatabase.readCards(null,0).getCount()>0) {
+					Intent intent = new Intent(MainActivity.this,CardEditActivity.class);
+					intent.putExtra("force alert", true);
+					startActivity(intent);	            
+		            
+					
+				} else {
+					//TODO
+				}
 			}
 		}
 	}
@@ -246,11 +262,10 @@ public class MainActivity extends Activity {
 		if (requestCode == SELECT_DECK_REQUEST_CODE) {
 			if (resultCode == RESULT_OK) {
 				cursor = CardsDatabase.readCards(data.getStringExtra("tag"), data.getIntExtra("quality", 0));
-				if (cursor.getCount()>0) {
+				
 					refreshVisibleData(true);
-				} else {
-					//TODO
-				}
+					showCard();
+				
 			}
 		}
 

@@ -10,6 +10,7 @@ package drankoDmitry.learningcards;
 public final class R {
     public static final class array {
         public static final int Qualities=0x7f070000;
+        public static final int Qualities_=0x7f070001;
     }
     public static final class attr {
     }
@@ -83,6 +84,7 @@ public final class R {
         public static final int add_card=0x7f06000d;
         public static final int app_name=0x7f060000;
         public static final int delete_database=0x7f06000e;
+        public static final int dialog_no_cards=0x7f060019;
         public static final int editCardDB=0x7f060005;
         public static final int force_tag=0x7f060013;
         public static final int forcedQuality=0x7f060014;

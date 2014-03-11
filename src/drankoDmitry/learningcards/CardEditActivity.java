@@ -5,13 +5,13 @@ import drankoDmitry.learningcards.R;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 
 public class CardEditActivity extends Activity {
 	
@@ -44,6 +44,20 @@ public class CardEditActivity extends Activity {
 				startActivity(new Intent(CardEditActivity.this,ReadFileActivity.class));	
 			}
 		});
+		
+		
+		boolean startAlert = getIntent().getExtras().getBoolean("force alert");
+		if (startAlert) {
+			
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+			
+			builder.setMessage(R.string.dialog_no_cards);
+
+			
+			AlertDialog dialog = builder.create();
+			dialog.show();
+		}
 	}
 
 	
