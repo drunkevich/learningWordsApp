@@ -82,9 +82,13 @@ public final class R {
         public static final int action_settings=0x7f060001;
         public static final int addCard=0x7f060007;
         public static final int add_card=0x7f06000d;
+        public static final int add_cards=0x7f06001e;
         public static final int app_name=0x7f060000;
         public static final int delete_database=0x7f06000e;
+        public static final int dialog_empty_deck=0x7f06001b;
+        public static final int dialog_empty_deck_title=0x7f06001c;
         public static final int dialog_no_cards=0x7f060019;
+        public static final int dialog_no_cards_title=0x7f06001a;
         public static final int editCardDB=0x7f060005;
         public static final int force_tag=0x7f060013;
         public static final int forcedQuality=0x7f060014;
@@ -97,6 +101,7 @@ public final class R {
         public static final int read_from_file=0x7f06000f;
         public static final int save_db=0x7f060010;
         public static final int selectCards=0x7f060016;
+        public static final int select_deck=0x7f06001d;
         public static final int tag_optional=0x7f06000b;
         public static final int title_activity_adding_card_manually=0x7f060008;
         public static final int title_activity_card_edit=0x7f060006;

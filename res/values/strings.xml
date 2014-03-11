@@ -45,5 +45,9 @@
     <string name="title_activity_deck_chooser">DeckChooser</string>
     <string name="ok">OK</string>
     <string name="dialog_no_cards">there are no cards in database. please add some</string>
-
+	<string name="dialog_no_cards_title">empty database</string>
+	<string name="dialog_empty_deck">select some cards or add new cards into the database</string>
+    <string name="dialog_empty_deck_title">current deck is empty</string>
+    <string name="select_deck">select deck</string>
+    <string name="add_cards">add cards</string>
 </resources>

@@ -52,7 +52,7 @@ public class CardEditActivity extends Activity {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
 			
-			builder.setMessage(R.string.dialog_no_cards);
+			builder.setMessage(R.string.dialog_no_cards).setTitle(R.string.dialog_no_cards_title);
 
 			
 			AlertDialog dialog = builder.create();

@@ -9,6 +9,7 @@ import drankoDmitry.learningcards.R;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.util.Log;
@@ -108,13 +109,15 @@ public class MainActivity extends Activity {
 		
 		spinnerTag = (Spinner) findViewById(R.id.spinner_tag);
 		
-		refreshVisibleData(true);
-		showCard();
-		
-		
 	}
 	
-	
+	@Override
+	protected void onStart() {
+		CardsDatabase.initialize(this);
+		refreshVisibleData(true);
+		showCard();
+		super.onStart();
+	}
 	
 	private void showCard() {
 		Log.d(dbgTag, "showCard()");
@@ -243,13 +246,29 @@ public class MainActivity extends Activity {
 			} else {
 				Log.d(dbgTag, "no cards selected");
 				if (CardsDatabase.readCards(null,0).getCount()>0) {
-					Intent intent = new Intent(MainActivity.this,CardEditActivity.class);
-					intent.putExtra("force alert", true);
-					startActivity(intent);	            
-		            
+					            
+					AlertDialog.Builder builder = new AlertDialog.Builder(this);				
+					builder.setMessage(R.string.dialog_empty_deck).setTitle(R.string.dialog_empty_deck_title);			
+					builder.setNeutralButton(R.string.add_cards, new DialogInterface.OnClickListener() {
+				           public void onClick(DialogInterface dialog, int id) {
+				        	   Intent intent = new Intent(MainActivity.this,CardEditActivity.class);
+								intent.putExtra("force alert", false);
+								startActivity(intent);
+				           }
+				       });
+				builder.setNeutralButton(R.string.select_deck, new DialogInterface.OnClickListener() {
+				           public void onClick(DialogInterface dialog, int id) {
+				        	   Intent intent2 = new Intent(MainActivity.this,DeckChooser.class);
+				        	   startActivityForResult(intent2, SELECT_DECK_REQUEST_CODE);
+				           }
+				       });
+					AlertDialog dialog = builder.create();
+					dialog.show();
 					
 				} else {
-					//TODO
+					Intent intent = new Intent(MainActivity.this,CardEditActivity.class);
+					intent.putExtra("force alert", true);
+					startActivity(intent);	
 				}
 			}
 		}
@@ -262,7 +281,7 @@ public class MainActivity extends Activity {
 		if (requestCode == SELECT_DECK_REQUEST_CODE) {
 			if (resultCode == RESULT_OK) {
 				cursor = CardsDatabase.readCards(data.getStringExtra("tag"), data.getIntExtra("quality", 0));
-				
+				Log.d(dbgTag, ""+cursor.getCount());
 					refreshVisibleData(true);
 					showCard();
 				
