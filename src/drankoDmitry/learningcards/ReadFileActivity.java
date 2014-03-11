@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class ReadFileActivity extends Activity {
 
@@ -42,6 +43,7 @@ public class ReadFileActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				readFile();
+				Toast.makeText(ReadFileActivity.this, "success", Toast.LENGTH_SHORT).show();	
 			}
 
 			

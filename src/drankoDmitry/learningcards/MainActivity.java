@@ -17,9 +17,12 @@ import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.TranslateAnimation;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -101,15 +104,101 @@ public class MainActivity extends Activity {
 				});
 		
 		
+		
+		
+		
+		
+		
+		
+		
+		
 		spinnerQuality = (Spinner) findViewById(R.id.spinner_quality);
 		ArrayAdapter<CharSequence> adapterQ = ArrayAdapter.createFromResource(this,
 		        R.array.Qualities, android.R.layout.simple_spinner_item);
 		adapterQ.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinnerQuality.setAdapter(adapterQ);
+		spinnerQuality.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				
+				String newQ = arg0.getSelectedItem().toString();
+				String oldQ = cursor.getString(4);
+				
+				AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+				//TODO hard code
+				builder.setMessage("change card quality from "+oldQ+" to "+newQ+"?").setTitle(R.string.card_edition);			
+				builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			        	   
+			        	   //TODO edit card
+			        	   
+			           }
+			       });
+			builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			        	   
+			           }
+			       });
+				AlertDialog dialog = builder.create();
+				dialog.show();
+				
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				
+				
+			}
+		});
+		
 		
 		spinnerTag = (Spinner) findViewById(R.id.spinner_tag);
+		spinnerTag.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				
+				String newT = arg0.getSelectedItem().toString();
+				String oldT = cursor.getString(3);
+				
+				AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+				//TODO hard code
+				builder.setMessage("change card tag from "+oldT+" to "+newT+"?").setTitle(R.string.card_edition);			
+				builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			        	   
+			        	   //TODO edit card
+			        	   
+			           }
+			       });
+			builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			        	   
+			           }
+			       });
+				AlertDialog dialog = builder.create();
+				dialog.show();
+				
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				
+				
+			}
+		});
 		
 	}
+	
+	/////////////////////////////////////////
+	/////////////////////////////////////////
+	//onCreate end
+	/////////////////////////////////////////
+	/////////////////////////////////////////
+	
 	
 	@Override
 	protected void onStart() {
@@ -284,7 +373,6 @@ public class MainActivity extends Activity {
 				Log.d(dbgTag, ""+cursor.getCount());
 					refreshVisibleData(true);
 					showCard();
-				
 			}
 		}
 
