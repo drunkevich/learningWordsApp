@@ -9,6 +9,7 @@ import drankoDmitry.learningcards.R;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -45,6 +46,7 @@ public class MainActivity extends Activity {
 	private Spinner spinnerTag;
 	private String dbgTag = "dbgTag";
 	private int SELECT_DECK_REQUEST_CODE = 1;
+	private int ADD_CARDS = 2;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -123,7 +125,7 @@ public class MainActivity extends Activity {
 			public void onItemSelected(AdapterView<?> arg0, View arg1,
 					int arg2, long arg3) {
 				
-				String newQ = arg0.getSelectedItem().toString();
+				final String newQ = arg0.getSelectedItem().toString();
 				String oldQ = cursor.getString(4);
 				
 				AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -131,9 +133,7 @@ public class MainActivity extends Activity {
 				builder.setMessage("change card quality from "+oldQ+" to "+newQ+"?").setTitle(R.string.card_edition);			
 				builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			           public void onClick(DialogInterface dialog, int id) {
-			        	   
-			        	   //TODO edit card
-			        	   
+			        	   editCardLocally(4,newQ);
 			           }
 			       });
 			builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -161,7 +161,7 @@ public class MainActivity extends Activity {
 			public void onItemSelected(AdapterView<?> arg0, View arg1,
 					int arg2, long arg3) {
 				
-				String newT = arg0.getSelectedItem().toString();
+				final String newT = arg0.getSelectedItem().toString();
 				String oldT = cursor.getString(3);
 				
 				AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -169,10 +169,10 @@ public class MainActivity extends Activity {
 				builder.setMessage("change card tag from "+oldT+" to "+newT+"?").setTitle(R.string.card_edition);			
 				builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			           public void onClick(DialogInterface dialog, int id) {
-			        	   
-			        	   //TODO edit card
-			        	   
+			        	   editCardLocally(3,newT);
 			           }
+
+					
 			       });
 			builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 			           public void onClick(DialogInterface dialog, int id) {
@@ -200,6 +200,47 @@ public class MainActivity extends Activity {
 	/////////////////////////////////////////
 	
 	
+	
+	
+	private void editCardLocally(int n, String newValue) {
+		String name = cursor.getString(1);
+		ContentValues values = new ContentValues();
+		values.put(CardsDatabase.WORD, cursor.getString(1));
+		values.put(CardsDatabase.TRANSLATION, cursor.getString(2));
+		switch (n) {
+			case 3:
+				values.put(CardsDatabase.TAG, newValue);
+				values.put(CardsDatabase.QUALITY, cursor.getString(4));
+				return;
+			case 4:
+				values.put(CardsDatabase.TAG, cursor.getString(3));
+				values.put(CardsDatabase.QUALITY, newValue);
+				return;
+			default:
+				break;
+		}
+		CardsDatabase.deleteCard(cursor.getString(0));
+		CardsDatabase.insert(values);
+		refreshVisibleData(true);
+		showCard(name);
+	}
+	
+	private void showCard(String name) {
+		Log.d(dbgTag, "showCard(name)");
+		if (cursor.getCount()>0) {
+			cursor.moveToFirst();
+			while (!cursor.getString(1).equals(name)) {
+				cursor.moveToNext();
+			}
+			debuglog(cursor);
+			mTextView[0].setText(cursor.getString(1));
+			spinnerQuality.setSelection(Integer.parseInt(cursor.getString(4))-1);
+			spinnerTag.setSelection(dbTags.indexOf(cursor.getString(3)));
+		} else {
+		Log.d(dbgTag, "no cards");
+		}
+	}
+
 	@Override
 	protected void onStart() {
 		CardsDatabase.initialize(this);
@@ -211,16 +252,14 @@ public class MainActivity extends Activity {
 	private void showCard() {
 		Log.d(dbgTag, "showCard()");
 		if (cursor.getCount()>0) {
-		cursor.moveToPosition(random.nextInt(cursor.getCount()));
-		debuglog(cursor);
-		mTextView[0].setText(cursor.getString(1));
-		spinnerQuality.setSelection(Integer.parseInt(cursor.getString(4))-1);
-		spinnerTag.setSelection(dbTags.indexOf(cursor.getString(3)));
-	} else {
-		//TODO
+			cursor.moveToPosition(random.nextInt(cursor.getCount()));
+			debuglog(cursor);
+			mTextView[0].setText(cursor.getString(1));
+			spinnerQuality.setSelection(Integer.parseInt(cursor.getString(4))-1);
+			spinnerTag.setSelection(dbTags.indexOf(cursor.getString(3)));
+		} else {
 		Log.d(dbgTag, "no cards");
-		
-	}
+		}
 		
 	}
 
@@ -238,7 +277,7 @@ public class MainActivity extends Activity {
 			return mGestureDetector.onTouchEvent(event);
 		} else {
 			Intent intent = new Intent(MainActivity.this,CardEditActivity.class);
-			intent.putExtra("force alert", true);
+			intent.putExtra("force alert", false); //TODO ???
 			startActivity(intent);	  
 			return false;
 		}
@@ -357,7 +396,7 @@ public class MainActivity extends Activity {
 				} else {
 					Intent intent = new Intent(MainActivity.this,CardEditActivity.class);
 					intent.putExtra("force alert", true);
-					startActivity(intent);	
+					startActivityForResult(intent,ADD_CARDS);	
 				}
 			}
 		}
@@ -373,6 +412,12 @@ public class MainActivity extends Activity {
 				Log.d(dbgTag, ""+cursor.getCount());
 					refreshVisibleData(true);
 					showCard();
+			}
+		} else if (requestCode == ADD_CARDS) {
+			if (resultCode == RESULT_CANCELED) {
+				if (CardsDatabase.readCards(null,0).getCount()==0) {
+					finish();
+				}
 			}
 		}
 

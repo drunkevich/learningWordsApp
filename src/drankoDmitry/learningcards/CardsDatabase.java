@@ -107,4 +107,9 @@ public class CardsDatabase extends SQLiteOpenHelper {
 	public static void deletedb() {
 		db.delete(CardsDatabase.TABLE_NAME, null, null);
 	}
+
+	public static void deleteCard(String string) {
+		// TODO Auto-generated method stub
+		//db.delete
+	}
 }

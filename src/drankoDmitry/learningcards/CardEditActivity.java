@@ -17,7 +17,7 @@ public class CardEditActivity extends Activity {
 	
 	
 	protected static final int GET_TEXT_FILE = 1;
-	
+	private boolean startAlert = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class CardEditActivity extends Activity {
 		});
 		
 		
-		boolean startAlert = getIntent().getExtras().getBoolean("force alert");
+		startAlert = getIntent().getExtras().getBoolean("force alert");
 		if (startAlert) {
 			
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -60,6 +60,16 @@ public class CardEditActivity extends Activity {
 		}
 	}
 
+	
+	@Override
+	public void onBackPressed() {
+		if (startAlert) {
+			setResult(RESULT_CANCELED);
+			finish();
+		} else {
+			super.onBackPressed();
+		}
+	}
 	
 
 	@Override
