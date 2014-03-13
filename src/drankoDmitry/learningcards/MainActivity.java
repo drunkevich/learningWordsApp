@@ -72,7 +72,7 @@ public class MainActivity extends Activity {
 						mFlipper.setOutAnimation(outToLeftAnimation());
 						
 						cursor.moveToPosition(random.nextInt(cursor.getCount()));
-						MainActivity.this.debuglog(cursor);
+						//MainActivity.this.debuglog(cursor);
 						spinnerQuality.setSelection(Integer.parseInt(cursor.getString(4))-1);
 						spinnerTag.setSelection(dbTags.indexOf(cursor.getString(3)));
 						mTextView[1-mFlipper.getDisplayedChild()].setText(cursor.getString(1));
@@ -127,23 +127,23 @@ public class MainActivity extends Activity {
 				
 				final String newQ = arg0.getSelectedItem().toString();
 				String oldQ = cursor.getString(4);
-				
-				AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-				//TODO hard code
-				builder.setMessage("change card quality from "+oldQ+" to "+newQ+"?").setTitle(R.string.card_edition);			
-				builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+				if (!newQ.equals(oldQ)) {
+					AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+					//TODO hard code
+					builder.setMessage("change card quality from "+oldQ+" to "+newQ+"?").setTitle(R.string.card_edition);			
+					builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			           public void onClick(DialogInterface dialog, int id) {
 			        	   editCardLocally(4,newQ);
 			           }
-			       });
-			builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+					});
+					builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 			           public void onClick(DialogInterface dialog, int id) {
 			        	   
 			           }
-			       });
-				AlertDialog dialog = builder.create();
-				dialog.show();
-				
+					});
+					AlertDialog dialog = builder.create();
+					dialog.show();
+				}
 			}
 
 			@Override
@@ -160,28 +160,27 @@ public class MainActivity extends Activity {
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1,
 					int arg2, long arg3) {
-				
 				final String newT = arg0.getSelectedItem().toString();
 				String oldT = cursor.getString(3);
-				
-				AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-				//TODO hard code
-				builder.setMessage("change card tag from "+oldT+" to "+newT+"?").setTitle(R.string.card_edition);			
-				builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+				if (!newT.equals(oldT)) {
+					AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+					//TODO hard code
+					builder.setMessage("change card tag from "+oldT+" to "+newT+"?").setTitle(R.string.card_edition);			
+					builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			           public void onClick(DialogInterface dialog, int id) {
 			        	   editCardLocally(3,newT);
 			           }
 
 					
-			       });
-			builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+					});
+					builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 			           public void onClick(DialogInterface dialog, int id) {
 			        	   
 			           }
-			       });
-				AlertDialog dialog = builder.create();
-				dialog.show();
-				
+					});
+					AlertDialog dialog = builder.create();
+					dialog.show();
+				}
 			}
 
 			@Override
@@ -408,7 +407,10 @@ public class MainActivity extends Activity {
 		
 		if (requestCode == SELECT_DECK_REQUEST_CODE) {
 			if (resultCode == RESULT_OK) {
-				cursor = CardsDatabase.readCards(data.getStringExtra("tag"), data.getIntExtra("quality", 0));
+				Log.d("dbg","into activity result");
+				currentTag=data.getStringExtra("tag");
+				currentQ=data.getIntExtra("quality", 0);
+				cursor = CardsDatabase.readCards(currentTag, currentQ);
 				Log.d(dbgTag, ""+cursor.getCount());
 					refreshVisibleData(true);
 					showCard();

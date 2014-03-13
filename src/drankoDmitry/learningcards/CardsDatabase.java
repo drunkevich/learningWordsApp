@@ -7,6 +7,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class CardsDatabase extends SQLiteOpenHelper {
 	
@@ -67,27 +68,27 @@ public class CardsDatabase extends SQLiteOpenHelper {
 	}
 	
 	public static Cursor readCards(String currentTag2, int currentQ2) {
+			String query;
 		if ((currentTag2==null) && (currentQ2==0)){
-		return db.query(CardsDatabase.TABLE_NAME,
-				CardsDatabase.columns, null, new String[] {}, null, null, null);
+			query = "SELECT * from "+CardsDatabase.TABLE_NAME;
 		} else if ((currentTag2!=null) && (currentQ2==0)) {
-			return db.query(CardsDatabase.TABLE_NAME,
-					CardsDatabase.columns, CardsDatabase.TAG+" = "+currentTag2, new String[] {}, null, null, null);
-
+			query = "SELECT * from "+CardsDatabase.TABLE_NAME+" WHERE " +CardsDatabase.TAG+" = '"+currentTag2+"'";
 		} else if ((currentTag2==null) && (currentQ2!=0)) {
-			return db.query(CardsDatabase.TABLE_NAME,
-					CardsDatabase.columns, CardsDatabase.QUALITY+" = "+currentQ2, new String[] {}, null, null, null);
-
+			query = "SELECT * from "+CardsDatabase.TABLE_NAME+" WHERE " +CardsDatabase.QUALITY+" = "+currentQ2;
 		} else {
-			return db.query(CardsDatabase.TABLE_NAME,
-					CardsDatabase.columns, CardsDatabase.TAG+" = "+currentTag2+" and "+CardsDatabase.QUALITY+" = "+currentQ2, new String[] {}, null, null, null);
-
+			query = "SELECT * from "+CardsDatabase.TABLE_NAME+" WHERE " +CardsDatabase.TAG+" = '"+currentTag2+"' AND "+CardsDatabase.QUALITY+" = "+currentQ2;
 		}
+		Log.d("sql query", query);
+		Cursor c= db.rawQuery(query, null);
+		Log.d("sql query", "query complite");
+		return c;
 	}
 	
 	public static ArrayList<String> readTags() {
 		ArrayList<String> result = new ArrayList<String>();
-		Cursor c = db.rawQuery("SELECT DISTINCT "+CardsDatabase.TAG+" from "+CardsDatabase.TABLE_NAME, null);
+		String query = "SELECT DISTINCT "+CardsDatabase.TAG+" from "+CardsDatabase.TABLE_NAME;
+		Log.d("sql query", query);
+		Cursor c = db.rawQuery(query, null);
 		
 		if (c.getCount()>0) {
 			c.moveToFirst();
@@ -108,8 +109,9 @@ public class CardsDatabase extends SQLiteOpenHelper {
 		db.delete(CardsDatabase.TABLE_NAME, null, null);
 	}
 
-	public static void deleteCard(String string) {
-		// TODO Auto-generated method stub
-		//db.delete
+	public static void deleteCard(String id) {
+		String query = "DELETE FROM "+CardsDatabase.TABLE_NAME+" WHERE "+CardsDatabase._ID+" = "+id;
+		Log.d("sql query", query);
+		db.rawQuery(query, null);
 	}
 }

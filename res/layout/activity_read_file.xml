@@ -16,8 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="0"
         android:ems="10"
-        android:hint="@string/path"
-        android:text="test" >
+        android:hint="@string/path">
 
         
     </EditText>
