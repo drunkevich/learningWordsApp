@@ -41,12 +41,12 @@ public class MainActivity extends Activity {
 	private ArrayList<String> dbTags = new ArrayList<String>();
 	private String currentTag;
 	private int currentQ=0;
-	private boolean isRefreshNeed;
 	private Spinner spinnerQuality;
 	private Spinner spinnerTag;
 	private String dbgTag = "dbgTag";
 	private int SELECT_DECK_REQUEST_CODE = 1;
 	private int ADD_CARDS = 2;
+	private static int RANDOM_CARD = -1; 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -59,7 +59,6 @@ public class MainActivity extends Activity {
 		mTextView[1] = (TextView) findViewById(R.id.textView2);
 		mFlipper.setBackgroundColor(getResources().getColor(R.color.bcgrd_word));
 		
-		isRefreshNeed = false;
 		
 		
 		mGestureDetector = new GestureDetector(this,
@@ -73,7 +72,7 @@ public class MainActivity extends Activity {
 						
 						cursor.moveToPosition(random.nextInt(cursor.getCount()));
 						//MainActivity.this.debuglog(cursor);
-						spinnerQuality.setSelection(Integer.parseInt(cursor.getString(4))-1);
+						spinnerQuality.setSelection(cursor.getInt(4)-1);
 						spinnerTag.setSelection(dbTags.indexOf(cursor.getString(3)));
 						mTextView[1-mFlipper.getDisplayedChild()].setText(cursor.getString(1));
 						mFlipper.getChildAt(1-mFlipper.getDisplayedChild()).setBackgroundColor(getResources().getColor(R.color.bcgrd_word));
@@ -133,7 +132,7 @@ public class MainActivity extends Activity {
 					builder.setMessage("change card quality from "+oldQ+" to "+newQ+"?").setTitle(R.string.card_edition);			
 					builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			           public void onClick(DialogInterface dialog, int id) {
-			        	   editCardLocally(4,newQ);
+			        	   editCardLocally(CardsDatabase.QUALITY,newQ);
 			           }
 					});
 					builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -168,7 +167,7 @@ public class MainActivity extends Activity {
 					builder.setMessage("change card tag from "+oldT+" to "+newT+"?").setTitle(R.string.card_edition);			
 					builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			           public void onClick(DialogInterface dialog, int id) {
-			        	   editCardLocally(3,newT);
+			        	   editCardLocally(CardsDatabase.TAG,newT);
 			           }
 
 					
@@ -186,7 +185,6 @@ public class MainActivity extends Activity {
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
 				
-				
 			}
 		});
 		
@@ -201,39 +199,31 @@ public class MainActivity extends Activity {
 	
 	
 	
-	private void editCardLocally(int n, String newValue) {
-		String name = cursor.getString(1);
-		ContentValues values = new ContentValues();
-		values.put(CardsDatabase.WORD, cursor.getString(1));
-		values.put(CardsDatabase.TRANSLATION, cursor.getString(2));
-		switch (n) {
-			case 3:
-				values.put(CardsDatabase.TAG, newValue);
-				values.put(CardsDatabase.QUALITY, cursor.getString(4));
-				return;
-			case 4:
-				values.put(CardsDatabase.TAG, cursor.getString(3));
-				values.put(CardsDatabase.QUALITY, newValue);
-				return;
-			default:
-				break;
-		}
-		CardsDatabase.deleteCard(cursor.getString(0));
-		CardsDatabase.insert(values);
-		refreshVisibleData(true);
-		showCard(name);
+	private void editCardLocally(String column, String newValue) {
+		int id = cursor.getInt(0);
+		ContentValues updatedValues = new ContentValues();
+		updatedValues.put(column, newValue);
+		CardsDatabase.updateCard(id, updatedValues);
+		refreshVisibleData();
+		showCard(id);
 	}
 	
-	private void showCard(String name) {
-		Log.d(dbgTag, "showCard(name)");
+	private void showCard(int id) {
+		Log.d(dbgTag, "showCard "+id);
 		if (cursor.getCount()>0) {
 			cursor.moveToFirst();
-			while (!cursor.getString(1).equals(name)) {
-				cursor.moveToNext();
+			if (id!=RANDOM_CARD) {
+				while ((cursor.getInt(0)!=id)||(cursor.isAfterLast())) {
+					cursor.moveToNext();
+				}
+				if (cursor.isAfterLast())
+					cursor.moveToPosition(random.nextInt(cursor.getCount()));
+			} else {
+				cursor.moveToPosition(random.nextInt(cursor.getCount()));
 			}
 			debuglog(cursor);
 			mTextView[0].setText(cursor.getString(1));
-			spinnerQuality.setSelection(Integer.parseInt(cursor.getString(4))-1);
+			spinnerQuality.setSelection(cursor.getInt(4)-1);
 			spinnerTag.setSelection(dbTags.indexOf(cursor.getString(3)));
 		} else {
 		Log.d(dbgTag, "no cards");
@@ -242,26 +232,14 @@ public class MainActivity extends Activity {
 
 	@Override
 	protected void onStart() {
+		Log.d(dbgTag, "onStart");
 		CardsDatabase.initialize(this);
-		refreshVisibleData(true);
-		showCard();
+		refreshVisibleData();
+		showCard(RANDOM_CARD);
 		super.onStart();
 	}
 	
-	private void showCard() {
-		Log.d(dbgTag, "showCard()");
-		if (cursor.getCount()>0) {
-			cursor.moveToPosition(random.nextInt(cursor.getCount()));
-			debuglog(cursor);
-			mTextView[0].setText(cursor.getString(1));
-			spinnerQuality.setSelection(Integer.parseInt(cursor.getString(4))-1);
-			spinnerTag.setSelection(dbTags.indexOf(cursor.getString(3)));
-		} else {
-		Log.d(dbgTag, "no cards");
-		}
 		
-	}
-
 	private void debuglog(Cursor c) {
 		
 		String msg = c.getString(0)+" "+c.getString(1)+" "+c.getString(2)+" "+c.getString(3)+" "+c.getString(4);
@@ -330,7 +308,7 @@ public class MainActivity extends Activity {
 				Animation.RELATIVE_TO_PARENT, 0.0f,
 				Animation.RELATIVE_TO_PARENT, 0.0f,
 				Animation.RELATIVE_TO_PARENT, 0.0f);
-		inFromRight.setDuration(200);
+		inFromRight.setDuration(300);
 		inFromRight.setInterpolator(new LinearInterpolator());
 		return inFromRight;
 	}
@@ -341,7 +319,7 @@ public class MainActivity extends Activity {
 				Animation.RELATIVE_TO_PARENT, -1.0f,
 				Animation.RELATIVE_TO_PARENT, 0.0f,
 				Animation.RELATIVE_TO_PARENT, 0.0f);
-		outtoLeft.setDuration(200);
+		outtoLeft.setDuration(300);
 		outtoLeft.setInterpolator(new LinearInterpolator());
 		return outtoLeft;
 	}
@@ -357,8 +335,8 @@ public class MainActivity extends Activity {
 	    currentQ = savedInstanceState.getInt("currentQ");
 	  }
 	
-	private void refreshVisibleData(boolean forced) {
-		if (forced || isRefreshNeed) {
+	private void refreshVisibleData() {
+		
 			cursor = CardsDatabase.readCards(currentTag,currentQ);
 			if (cursor.getCount()>0) {
 				dbTags = CardsDatabase.readTags();			
@@ -369,7 +347,6 @@ public class MainActivity extends Activity {
 				}
 				adapterT.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 				spinnerTag.setAdapter(adapterT);
-				isRefreshNeed = false;
 			} else {
 				Log.d(dbgTag, "no cards selected");
 				if (CardsDatabase.readCards(null,0).getCount()>0) {
@@ -398,7 +375,7 @@ public class MainActivity extends Activity {
 					startActivityForResult(intent,ADD_CARDS);	
 				}
 			}
-		}
+		
 	}
 
 	@Override
@@ -412,8 +389,8 @@ public class MainActivity extends Activity {
 				currentQ=data.getIntExtra("quality", 0);
 				cursor = CardsDatabase.readCards(currentTag, currentQ);
 				Log.d(dbgTag, ""+cursor.getCount());
-					refreshVisibleData(true);
-					showCard();
+					refreshVisibleData();
+					showCard(RANDOM_CARD);
 			}
 		} else if (requestCode == ADD_CARDS) {
 			if (resultCode == RESULT_CANCELED) {

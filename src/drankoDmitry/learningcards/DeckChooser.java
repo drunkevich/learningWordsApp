@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -56,6 +57,7 @@ public class DeckChooser extends Activity {
 	protected void enterClicked() {
 		
 		String tag = spinnerTag.getSelectedItem().toString();
+		Log.d("dbgTag","tag is "+ tag);
 		if (tag.equals("-")) tag=null;
 		String q = spinnerQuality.getSelectedItem().toString();
 		int i;

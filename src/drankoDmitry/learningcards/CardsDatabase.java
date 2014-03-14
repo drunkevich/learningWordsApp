@@ -114,4 +114,17 @@ public class CardsDatabase extends SQLiteOpenHelper {
 		Log.d("sql query", query);
 		db.rawQuery(query, null);
 	}
+	
+	public static void updateCard(int id, String column, String newValue) {
+		
+		
+	}
+
+	public static void updateCard(int id, ContentValues updatedValues) {
+		db.update(CardsDatabase.TABLE_NAME, updatedValues, CardsDatabase._ID+" = "+id, null);
+		
+	}
+	
+	
+	
 }
