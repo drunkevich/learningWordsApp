@@ -52,7 +52,6 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		CardsDatabase.initialize(this);
 		
 		mFlipper = (ViewFlipper) findViewById(R.id.view_flipper);
 		mTextView[0] = (TextView) findViewById(R.id.textView1);
@@ -213,7 +212,7 @@ public class MainActivity extends Activity {
 		if (cursor.getCount()>0) {
 			cursor.moveToFirst();
 			if (id!=RANDOM_CARD) {
-				while ((cursor.getInt(0)!=id)||(cursor.isAfterLast())) {
+				while ((cursor.getInt(0)!=id)&&(!cursor.isAfterLast())) {
 					cursor.moveToNext();
 				}
 				if (cursor.isAfterLast())
@@ -225,6 +224,7 @@ public class MainActivity extends Activity {
 			mTextView[0].setText(cursor.getString(1));
 			spinnerQuality.setSelection(cursor.getInt(4)-1);
 			spinnerTag.setSelection(dbTags.indexOf(cursor.getString(3)));
+			
 		} else {
 		Log.d(dbgTag, "no cards");
 		}
@@ -293,10 +293,10 @@ public class MainActivity extends Activity {
 	
 	
 	@Override
-	protected void onDestroy() {
+	protected void onStop() {
 
 		CardsDatabase.closedb();
-		super.onDestroy();
+		super.onStop();
 
 	}
 	
@@ -325,14 +325,14 @@ public class MainActivity extends Activity {
 	}
 	
 	protected void onSaveInstanceState(Bundle outState) {
-	    super.onSaveInstanceState(outState);
 	    outState.putString("currentTag", currentTag);
 	    outState.putInt("currentQ", currentQ);
+	    super.onSaveInstanceState(outState);
 	  }
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-	    super.onRestoreInstanceState(savedInstanceState);
 	    currentTag = savedInstanceState.getString("currentTag");
 	    currentQ = savedInstanceState.getInt("currentQ");
+	    super.onRestoreInstanceState(savedInstanceState);
 	  }
 	
 	private void refreshVisibleData() {
@@ -387,6 +387,7 @@ public class MainActivity extends Activity {
 				Log.d("dbg","into activity result");
 				currentTag=data.getStringExtra("tag");
 				currentQ=data.getIntExtra("quality", 0);
+				CardsDatabase.initialize(this);
 				cursor = CardsDatabase.readCards(currentTag, currentQ);
 				Log.d(dbgTag, ""+cursor.getCount());
 					refreshVisibleData();
@@ -394,6 +395,7 @@ public class MainActivity extends Activity {
 			}
 		} else if (requestCode == ADD_CARDS) {
 			if (resultCode == RESULT_CANCELED) {
+				CardsDatabase.initialize(this);
 				if (CardsDatabase.readCards(null,0).getCount()==0) {
 					finish();
 				}

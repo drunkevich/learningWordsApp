@@ -55,15 +55,15 @@ public class CardsDatabase extends SQLiteOpenHelper {
 	
 	
 	public static void initialize(Context c) {
-		if (db==null) {
-			mDbHelper = new CardsDatabase(c);
+		if (mDbHelper==null) {
+			mDbHelper = new CardsDatabase(c);}
+		
 			db = mDbHelper.getWritableDatabase();
 		}
-	}
 
 	public static void closedb() {
-		
-		db.close();
+		if (db!=null)
+			db.close();
 		
 	}
 	

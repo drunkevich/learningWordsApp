@@ -101,7 +101,9 @@ public class ReadFileActivity extends Activity {
 	        					}
 	        				else 
 	        					values.put(CardsDatabase.QUALITY, CardsDatabase.DEFAULT_QUALITY);
-		        	  CardsDatabase.insert(values);
+	        				CardsDatabase.initialize(this);
+	        				CardsDatabase.insert(values);
+	        				CardsDatabase.closedb();
 	        			}
 	        		}
 	        		br.close();
