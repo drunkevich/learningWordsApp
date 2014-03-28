@@ -101,9 +101,8 @@ public class ReadFileActivity extends Activity {
 	        					}
 	        				else 
 	        					values.put(CardsDatabase.QUALITY, CardsDatabase.DEFAULT_QUALITY);
-	        				CardsDatabase.initialize(this);
-	        				CardsDatabase.insert(values);
-	        				CardsDatabase.closedb();
+	        				
+	        				CardsDatabase.insertCard(values,this);
 	        			}
 	        		}
 	        		br.close();
@@ -182,7 +181,7 @@ public class ReadFileActivity extends Activity {
 			        		  }
 			        	  else 
 			        		  values.put(CardsDatabase.QUALITY, dQuality);
-			        	  CardsDatabase.insert(values);
+			        	  CardsDatabase.insertCard(values,this);
 			          }
 			          
 			        }

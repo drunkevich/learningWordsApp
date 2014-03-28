@@ -84,9 +84,7 @@ public class CardEditActivity extends Activity {
 		
 		 switch (item.getItemId()) {
 	        case R.id.delete_database:
-	        	CardsDatabase.initialize(this);
-	            CardsDatabase.deletedb();
-	            CardsDatabase.closedb();
+	            CardsDatabase.deletedb(this);
 	            return true;
 	        
 	        default:

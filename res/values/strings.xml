@@ -33,14 +33,6 @@
         <item>5</item>
     </string-array>
     
-    <string-array name="Qualities_">
-        <item>-</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-    </string-array>
 
     <string name="selectCards">Select cards</string>
     <string name="title_activity_deck_chooser">DeckChooser</string>
@@ -52,4 +44,5 @@
     <string name="dialog_empty_deck_title">current deck is empty</string>
     <string name="select_deck">select deck</string>
     <string name="add_cards">add cards</string>
+    <string name="selectDeck">selectDeck</string>
 </resources>

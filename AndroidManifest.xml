@@ -52,10 +52,7 @@
             android:name="drankoDmitry.learningcards.ReadFileActivity"
             android:label="@string/title_activity_read_file" >
         </activity>
-        <activity
-            android:name="drankoDmitry.learningcards.DeckChooser"
-            android:label="@string/title_activity_deck_chooser" >
-        </activity>
+       
     </application>
 
 </manifest>

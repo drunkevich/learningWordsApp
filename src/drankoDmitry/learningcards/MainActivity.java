@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
 	
 	private Cursor cursor;
 	private Random random = new Random();
-	private ViewFlipper mFlipper;
+	private ViewFlipper mSwitcher;
 	private TextView[] mTextView = new TextView[2];
 	private GestureDetector mGestureDetector;
 	private boolean face = true;
@@ -53,10 +53,9 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		
 		
-		mFlipper = (ViewFlipper) findViewById(R.id.view_flipper);
+		mSwitcher = (ViewFlipper) findViewById(R.id.viewSwitcher1);
 		mTextView[0] = (TextView) findViewById(R.id.textView1);
 		mTextView[1] = (TextView) findViewById(R.id.textView2);
-		mFlipper.setBackgroundColor(getResources().getColor(R.color.bcgrd_word));
 		
 		
 		
@@ -67,15 +66,15 @@ public class MainActivity extends Activity {
 							float velocityX, float velocityY) {
 						
 
-						mFlipper.setOutAnimation(outToLeftAnimation());
+						mSwitcher.setOutAnimation(outToLeftAnimation());
 						
 						cursor.moveToPosition(random.nextInt(cursor.getCount()));
 						//MainActivity.this.debuglog(cursor);
 						spinnerQuality.setSelection(cursor.getInt(4)-1);
 						spinnerTag.setSelection(dbTags.indexOf(cursor.getString(3)));
-						mTextView[1-mFlipper.getDisplayedChild()].setText(cursor.getString(1));
-						mFlipper.getChildAt(1-mFlipper.getDisplayedChild()).setBackgroundColor(getResources().getColor(R.color.bcgrd_word));
-						mFlipper.showPrevious();
+						mTextView[1-mSwitcher.getDisplayedChild()].setText(cursor.getString(1));
+						mSwitcher.getChildAt(1-mSwitcher.getDisplayedChild()).setBackgroundColor(getResources().getColor(R.color.bcgrd_word));
+						mSwitcher.showPrevious();
 						
 						return true;
 					}
@@ -87,16 +86,16 @@ public class MainActivity extends Activity {
 					@Override
 					public boolean onSingleTapConfirmed(MotionEvent e) {
 						debuglog(cursor);
-						mFlipper.setInAnimation(inFromRightAnimation());
-						mFlipper.setOutAnimation(outToLeftAnimation());
+						mSwitcher.setInAnimation(inFromRightAnimation());
+						mSwitcher.setOutAnimation(outToLeftAnimation());
 						if (face) {
-							mTextView[1-mFlipper.getDisplayedChild()].setText(cursor.getString(2));
-							mFlipper.getChildAt(1-mFlipper.getDisplayedChild()).setBackgroundColor(getResources().getColor(R.color.bcgrd_translation));
+							mTextView[1-mSwitcher.getDisplayedChild()].setText(cursor.getString(2));
+							mSwitcher.getChildAt(1-mSwitcher.getDisplayedChild()).setBackgroundColor(getResources().getColor(R.color.bcgrd_translation));
 						} else {
-							mTextView[1-mFlipper.getDisplayedChild()].setText(cursor.getString(1));
-							mFlipper.getChildAt(1-mFlipper.getDisplayedChild()).setBackgroundColor(getResources().getColor(R.color.bcgrd_word));
+							mTextView[1-mSwitcher.getDisplayedChild()].setText(cursor.getString(1));
+							mSwitcher.getChildAt(1-mSwitcher.getDisplayedChild()).setBackgroundColor(getResources().getColor(R.color.bcgrd_word));
 						}
-						mFlipper.showPrevious();
+						mSwitcher.showPrevious();
 						
 						return true;
 					}
@@ -112,47 +111,9 @@ public class MainActivity extends Activity {
 		
 		
 		
-		spinnerQuality = (Spinner) findViewById(R.id.spinner_quality);
-		ArrayAdapter<CharSequence> adapterQ = ArrayAdapter.createFromResource(this,
-		        R.array.Qualities, android.R.layout.simple_spinner_item);
-		adapterQ.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinnerQuality.setAdapter(adapterQ);
-		spinnerQuality.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int arg2, long arg3) {
-				
-				final String newQ = arg0.getSelectedItem().toString();
-				String oldQ = cursor.getString(4);
-				if (!newQ.equals(oldQ)) {
-					AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-					//TODO hard code
-					builder.setMessage("change card quality from "+oldQ+" to "+newQ+"?").setTitle(R.string.card_edition);			
-					builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-			           public void onClick(DialogInterface dialog, int id) {
-			        	   editCardLocally(CardsDatabase.QUALITY,newQ);
-			           }
-					});
-					builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-			           public void onClick(DialogInterface dialog, int id) {
-			        	   
-			           }
-					});
-					AlertDialog dialog = builder.create();
-					dialog.show();
-				}
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-				
-				
-			}
-		});
 		
 		
-		spinnerTag = (Spinner) findViewById(R.id.spinner_tag);
+		spinnerTag = (Spinner) findViewById(R.id.spinner1);
 		spinnerTag.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
@@ -163,10 +124,10 @@ public class MainActivity extends Activity {
 				if (!newT.equals(oldT)) {
 					AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 					//TODO hard code
-					builder.setMessage("change card tag from "+oldT+" to "+newT+"?").setTitle(R.string.card_edition);			
+					builder.setMessage("change deck with tag "+oldT+" to "+newT+"?").setTitle(R.string.selectDeck);			
 					builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			           public void onClick(DialogInterface dialog, int id) {
-			        	   editCardLocally(CardsDatabase.TAG,newT);
+			        	   //TODO change deck
 			           }
 
 					
@@ -198,44 +159,11 @@ public class MainActivity extends Activity {
 	
 	
 	
-	private void editCardLocally(String column, String newValue) {
-		int id = cursor.getInt(0);
-		ContentValues updatedValues = new ContentValues();
-		updatedValues.put(column, newValue);
-		CardsDatabase.updateCard(id, updatedValues);
-		refreshVisibleData();
-		showCard(id);
-	}
-	
-	private void showCard(int id) {
-		Log.d(dbgTag, "showCard "+id);
-		if (cursor.getCount()>0) {
-			cursor.moveToFirst();
-			if (id!=RANDOM_CARD) {
-				while ((cursor.getInt(0)!=id)&&(!cursor.isAfterLast())) {
-					cursor.moveToNext();
-				}
-				if (cursor.isAfterLast())
-					cursor.moveToPosition(random.nextInt(cursor.getCount()));
-			} else {
-				cursor.moveToPosition(random.nextInt(cursor.getCount()));
-			}
-			debuglog(cursor);
-			mTextView[0].setText(cursor.getString(1));
-			spinnerQuality.setSelection(cursor.getInt(4)-1);
-			spinnerTag.setSelection(dbTags.indexOf(cursor.getString(3)));
-			
-		} else {
-		Log.d(dbgTag, "no cards");
-		}
-	}
 
 	@Override
 	protected void onStart() {
 		Log.d(dbgTag, "onStart");
-		CardsDatabase.initialize(this);
-		refreshVisibleData();
-		showCard(RANDOM_CARD);
+		//TODO
 		super.onStart();
 	}
 	
@@ -246,7 +174,7 @@ public class MainActivity extends Activity {
 		Log.d("current card log", msg);
 		
 	}
-
+//TODO ?
 	@Override 
 	public boolean onTouchEvent(MotionEvent event) {
 		Log.d(dbgTag, "on touch");
@@ -279,27 +207,11 @@ public class MainActivity extends Activity {
 				intent1.putExtra("force alert", false);
 				startActivity(intent1);	            
 	            return true;
-	        case R.id.select:
-	    		Intent intent2 = new Intent(this,DeckChooser.class);
-	    		startActivityForResult(intent2, SELECT_DECK_REQUEST_CODE);
-	        	return true;
+	       
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
 	}
-	
-		
-	
-	
-	
-	@Override
-	protected void onStop() {
-
-		CardsDatabase.closedb();
-		super.onStop();
-
-	}
-	
 	
 	
 	private Animation inFromRightAnimation() {
@@ -335,70 +247,15 @@ public class MainActivity extends Activity {
 	    super.onRestoreInstanceState(savedInstanceState);
 	  }
 	
-	private void refreshVisibleData() {
-		
-			cursor = CardsDatabase.readCards(currentTag,currentQ);
-			if (cursor.getCount()>0) {
-				dbTags = CardsDatabase.readTags();			
-				ArrayAdapter<CharSequence> adapterT = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
-			
-				for (String t:dbTags) {
-					adapterT.add(t);
-				}
-				adapterT.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-				spinnerTag.setAdapter(adapterT);
-			} else {
-				Log.d(dbgTag, "no cards selected");
-				if (CardsDatabase.readCards(null,0).getCount()>0) {
-					            
-					AlertDialog.Builder builder = new AlertDialog.Builder(this);				
-					builder.setMessage(R.string.dialog_empty_deck).setTitle(R.string.dialog_empty_deck_title);			
-					builder.setNeutralButton(R.string.add_cards, new DialogInterface.OnClickListener() {
-				           public void onClick(DialogInterface dialog, int id) {
-				        	   Intent intent = new Intent(MainActivity.this,CardEditActivity.class);
-								intent.putExtra("force alert", false);
-								startActivity(intent);
-				           }
-				       });
-				builder.setNeutralButton(R.string.select_deck, new DialogInterface.OnClickListener() {
-				           public void onClick(DialogInterface dialog, int id) {
-				        	   Intent intent2 = new Intent(MainActivity.this,DeckChooser.class);
-				        	   startActivityForResult(intent2, SELECT_DECK_REQUEST_CODE);
-				           }
-				       });
-					AlertDialog dialog = builder.create();
-					dialog.show();
-					
-				} else {
-					Intent intent = new Intent(MainActivity.this,CardEditActivity.class);
-					intent.putExtra("force alert", true);
-					startActivityForResult(intent,ADD_CARDS);	
-				}
-			}
-		
-	}
+	
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-		
-		if (requestCode == SELECT_DECK_REQUEST_CODE) {
-			if (resultCode == RESULT_OK) {
-				Log.d("dbg","into activity result");
-				currentTag=data.getStringExtra("tag");
-				currentQ=data.getIntExtra("quality", 0);
-				CardsDatabase.initialize(this);
-				cursor = CardsDatabase.readCards(currentTag, currentQ);
-				Log.d(dbgTag, ""+cursor.getCount());
-					refreshVisibleData();
-					showCard(RANDOM_CARD);
-			}
-		} else if (requestCode == ADD_CARDS) {
-			if (resultCode == RESULT_CANCELED) {
-				CardsDatabase.initialize(this);
-				if (CardsDatabase.readCards(null,0).getCount()==0) {
-					finish();
-				}
+		if (requestCode == ADD_CARDS) {
+			if (resultCode == RESULT_CANCELED){
+				//if () {
+				//	finish();
+				//}
 			}
 		}
 

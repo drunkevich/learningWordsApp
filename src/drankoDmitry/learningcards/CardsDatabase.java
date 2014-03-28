@@ -31,8 +31,6 @@ public class CardsDatabase extends SQLiteOpenHelper {
 	final private static Integer VERSION = 1;
 	final private Context mContext;
 
-	private static CardsDatabase mDbHelper;
-	private static SQLiteDatabase db;
 	
 	public CardsDatabase(Context context) {
 		super(context, NAME, null, VERSION);
@@ -53,76 +51,75 @@ public class CardsDatabase extends SQLiteOpenHelper {
 		mContext.deleteDatabase(NAME);
 	}
 	
-	
-	public static void initialize(Context c) {
-		if (mDbHelper==null) {
-			mDbHelper = new CardsDatabase(c);}
-		
-			db = mDbHelper.getWritableDatabase();
-		}
 
-	public static void closedb() {
-		if (db!=null)
-			db.close();
-		
-	}
 	
-	public static Cursor readCards(String currentTag2, int currentQ2) {
+	public static Cursor readCards(String tag, Context ctx) {
 			String query;
-		if ((currentTag2==null) && (currentQ2==0)){
+		if (tag==null){
 			query = "SELECT * from "+CardsDatabase.TABLE_NAME;
-		} else if ((currentTag2!=null) && (currentQ2==0)) {
-			query = "SELECT * from "+CardsDatabase.TABLE_NAME+" WHERE " +CardsDatabase.TAG+" = '"+currentTag2+"'";
-		} else if ((currentTag2==null) && (currentQ2!=0)) {
-			query = "SELECT * from "+CardsDatabase.TABLE_NAME+" WHERE " +CardsDatabase.QUALITY+" = "+currentQ2;
 		} else {
-			query = "SELECT * from "+CardsDatabase.TABLE_NAME+" WHERE " +CardsDatabase.TAG+" = '"+currentTag2+"' AND "+CardsDatabase.QUALITY+" = "+currentQ2;
+			query = "SELECT * from "+CardsDatabase.TABLE_NAME+" WHERE " +CardsDatabase.TAG+" = '"+tag+"'";
 		}
 		Log.d("sql query", query);
+		CardsDatabase helper = new CardsDatabase(ctx);
+		SQLiteDatabase db = helper.getReadableDatabase();
 		Cursor c= db.rawQuery(query, null);
+		db.close();
 		Log.d("sql query", "query complite");
 		return c;
 	}
 	
-	public static ArrayList<String> readTags() {
+	public static ArrayList<String> readTags(Context ctx) {
 		ArrayList<String> result = new ArrayList<String>();
 		String query = "SELECT DISTINCT "+CardsDatabase.TAG+" from "+CardsDatabase.TABLE_NAME;
 		Log.d("sql query", query);
+		CardsDatabase helper = new CardsDatabase(ctx);
+		SQLiteDatabase db = helper.getReadableDatabase();
 		Cursor c = db.rawQuery(query, null);
-		
+		db.close();
 		if (c.getCount()>0) {
 			c.moveToFirst();
 			result.add(c.getString(0));
 			while (c.moveToNext()) {
 				result.add(c.getString(0));	
 			}
-		return result;
 		}
-		else return null;
+		c.close();
+		return result;
+		
 	}
 	
-	public static void insert(ContentValues values) {
-		 db.insert(CardsDatabase.TABLE_NAME, null, values);
+	public static void insertCard(ContentValues values, Context ctx) {
+		CardsDatabase helper = new CardsDatabase(ctx);
+		SQLiteDatabase db = helper.getWritableDatabase();
+		db.insert(CardsDatabase.TABLE_NAME, null, values);
+		db.close();
+		values.clear();
 	}
 	
-	public static void deletedb() {
+	public static void deletedb(Context ctx) {
+		CardsDatabase helper = new CardsDatabase(ctx);
+		SQLiteDatabase db = helper.getWritableDatabase();
 		db.delete(CardsDatabase.TABLE_NAME, null, null);
+		db.close();
 	}
 
-	public static void deleteCard(String id) {
+	public static void deleteCard(String id, Context ctx) {
 		String query = "DELETE FROM "+CardsDatabase.TABLE_NAME+" WHERE "+CardsDatabase._ID+" = "+id;
 		Log.d("sql query", query);
+		CardsDatabase helper = new CardsDatabase(ctx);
+		SQLiteDatabase db = helper.getWritableDatabase();
 		db.rawQuery(query, null);
+		db.close();
 	}
 	
-	public static void updateCard(int id, String column, String newValue) {
-		
-		
-	}
-
-	public static void updateCard(int id, ContentValues updatedValues) {
+	
+	public static void updateCard(int id, ContentValues updatedValues ,Context ctx) {
+		CardsDatabase helper = new CardsDatabase(ctx);
+		SQLiteDatabase db = helper.getWritableDatabase();
 		db.update(CardsDatabase.TABLE_NAME, updatedValues, CardsDatabase._ID+" = "+id, null);
-		
+		db.close();
+		updatedValues.clear();
 	}
 	
 	

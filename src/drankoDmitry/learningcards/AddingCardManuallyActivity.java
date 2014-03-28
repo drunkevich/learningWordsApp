@@ -67,9 +67,8 @@ public class AddingCardManuallyActivity extends Activity {
 						}
 					else
 						values.put(CardsDatabase.QUALITY, CardsDatabase.DEFAULT_QUALITY);
-					CardsDatabase.initialize(AddingCardManuallyActivity.this);
-					CardsDatabase.insert(values);
-					CardsDatabase.closedb();
+					
+					CardsDatabase.insertCard(values,AddingCardManuallyActivity.this);
 					Toast.makeText(AddingCardManuallyActivity.this, "success", Toast.LENGTH_SHORT).show();
 					
 					mWord.clear();

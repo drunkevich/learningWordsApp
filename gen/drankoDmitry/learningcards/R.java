@@ -10,7 +10,6 @@ package drankoDmitry.learningcards;
 public final class R {
     public static final class array {
         public static final int Qualities=0x7f080000;
-        public static final int Qualities_=0x7f080001;
     }
     public static final class attr {
     }
@@ -33,44 +32,38 @@ public final class R {
     }
     public static final class id {
         public static final int LinearLayout1=0x7f0b0000;
-        public static final int LinearLayout2=0x7f0b0011;
-        public static final int RelativeLayout1=0x7f0b0016;
-        public static final int action_settings=0x7f0b0019;
+        public static final int LinearLayout2=0x7f0b000f;
+        public static final int action_settings=0x7f0b0015;
         public static final int add_card=0x7f0b0005;
-        public static final int dc_ok=0x7f0b000a;
-        public static final int dc_q=0x7f0b0009;
-        public static final int dc_tag=0x7f0b0008;
-        public static final int delete_database=0x7f0b001a;
-        public static final int editCards=0x7f0b001b;
-        public static final int file_quality=0x7f0b0014;
-        public static final int file_tag=0x7f0b0013;
-        public static final int grid=0x7f0b000b;
-        public static final int import_file=0x7f0b0015;
-        public static final int include1=0x7f0b0010;
-        public static final int include2=0x7f0b000f;
-        public static final int path=0x7f0b0012;
+        public static final int delete_database=0x7f0b0016;
+        public static final int editCards=0x7f0b0017;
+        public static final int file_quality=0x7f0b0012;
+        public static final int file_tag=0x7f0b0011;
+        public static final int imageButton1=0x7f0b0009;
+        public static final int import_file=0x7f0b0013;
+        public static final int include2=0x7f0b000b;
+        public static final int path=0x7f0b0010;
         public static final int quality=0x7f0b0004;
         public static final int read_file=0x7f0b0006;
-        public static final int select=0x7f0b001c;
-        public static final int spinner_quality=0x7f0b000d;
-        public static final int spinner_tag=0x7f0b000c;
+        public static final int spinner1=0x7f0b0008;
         public static final int tag=0x7f0b0003;
-        public static final int testFile=0x7f0b001d;
-        public static final int textView1=0x7f0b0017;
-        public static final int textView2=0x7f0b0018;
+        public static final int testFile=0x7f0b0018;
+        public static final int textView1=0x7f0b000d;
+        public static final int textView2=0x7f0b0014;
+        public static final int toggleButton1=0x7f0b000c;
+        public static final int toggleButton2=0x7f0b000e;
         public static final int translation=0x7f0b0002;
-        public static final int view_flipper=0x7f0b000e;
+        public static final int viewSwitcher1=0x7f0b000a;
         public static final int word=0x7f0b0001;
         public static final int write_file=0x7f0b0007;
     }
     public static final class layout {
         public static final int activity_adding_card_manually=0x7f030000;
         public static final int activity_card_edit=0x7f030001;
-        public static final int activity_deck_chooser=0x7f030002;
-        public static final int activity_main=0x7f030003;
-        public static final int activity_read_file=0x7f030004;
-        public static final int first=0x7f030005;
-        public static final int second=0x7f030006;
+        public static final int activity_main=0x7f030002;
+        public static final int activity_read_file=0x7f030003;
+        public static final int first=0x7f030004;
+        public static final int second=0x7f030005;
     }
     public static final class menu {
         public static final int adding_card_manually=0x7f0a0000;
@@ -107,6 +100,7 @@ public final class R {
         public static final int read_from_file=0x7f07000f;
         public static final int save_db=0x7f070010;
         public static final int selectCards=0x7f070017;
+        public static final int selectDeck=0x7f070021;
         public static final int select_deck=0x7f07001f;
         public static final int tag_optional=0x7f07000b;
         public static final int title_activity_adding_card_manually=0x7f070008;
