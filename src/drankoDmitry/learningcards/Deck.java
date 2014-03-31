@@ -114,4 +114,11 @@ public class Deck {
 			quality=_quality;
 		}
 	}
+
+	public boolean isEmpty() {
+		if (base.size()>0)
+			return false;
+		else 
+			return true;
+	}
 }

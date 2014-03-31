@@ -35,6 +35,7 @@ public final class R {
         public static final int LinearLayout2=0x7f0b000b;
         public static final int action_settings=0x7f0b0019;
         public static final int add_card=0x7f0b0005;
+        public static final int cardView=0x7f0b000a;
         public static final int delete_database=0x7f0b001a;
         public static final int editCards=0x7f0b001b;
         public static final int file_quality=0x7f0b000e;
@@ -43,7 +44,6 @@ public final class R {
         public static final int imageButtonEdit=0x7f0b0014;
         public static final int imageButtonManageDeck=0x7f0b0009;
         public static final int import_file=0x7f0b000f;
-        public static final int include=0x7f0b000a;
         public static final int path=0x7f0b000c;
         public static final int quality=0x7f0b0004;
         public static final int read_file=0x7f0b0006;

@@ -33,8 +33,8 @@ import android.widget.ViewFlipper;
 public class MainActivity extends Activity {
 
 	
-	private Cursor cursor;
 	private Random random = new Random();
+	private View cardView;
 	private TextView tvWord;
 	private TextView tvTranslation;
 	private TextView tvQuality;
@@ -49,6 +49,7 @@ public class MainActivity extends Activity {
 	private int ADD_CARDS = 2;
 	private static int RANDOM_CARD = -1; 
 	private Deck deck;
+	private Deck.Card currentCard;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -61,7 +62,7 @@ public class MainActivity extends Activity {
 	ibManageDeck = (ImageButton) findViewById(R.id.imageButtonManageDeck);
 	ibEdit = (ImageButton) findViewById(R.id.imageButtonEdit);
 	spinnerTag = (Spinner) findViewById(R.id.spinnerSetTag);
-		
+	cardView = findViewById(R.id.cardView);
 	
 	
 	spinnerTag.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -70,13 +71,13 @@ public class MainActivity extends Activity {
 		public void onItemSelected(AdapterView<?> arg0, View arg1,
 				int arg2, long arg3) {
 			final String newT = arg0.getSelectedItem().toString();
-			String oldT = cursor.getString(3);
-			if (!newT.equals(oldT)) {
+			if (!newT.equals(currentTag)) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 				//TODO hard code
 				builder.setMessage("select deck with tag "+newT+"?").setTitle(R.string.selectDeck);			
 				builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 		           public void onClick(DialogInterface dialog, int id) {
+		        	   currentTag = newT;
 		        	   deck = new Deck(newT, MainActivity.this);
 		        	   showCard();
 		           }
@@ -100,22 +101,13 @@ public class MainActivity extends Activity {
 	
 	
 	
-		/*mGestureDetector = new GestureDetector(this,
+		mGestureDetector = new GestureDetector(this,
 				new GestureDetector.SimpleOnGestureListener() {
 					@Override
 					public boolean onFling(MotionEvent e1, MotionEvent e2,
 							float velocityX, float velocityY) {
 						
-
-						mSwitcher.setOutAnimation(outToLeftAnimation());
-						
-						cursor.moveToPosition(random.nextInt(cursor.getCount()));
-						//MainActivity.this.debuglog(cursor);
-						spinnerQuality.setSelection(cursor.getInt(4)-1);
-						spinnerTag.setSelection(dbTags.indexOf(cursor.getString(3)));
-						mTextView[1-mSwitcher.getDisplayedChild()].setText(cursor.getString(1));
-						mSwitcher.getChildAt(1-mSwitcher.getDisplayedChild()).setBackgroundColor(getResources().getColor(R.color.bcgrd_word));
-						mSwitcher.showPrevious();
+						showCard();
 						
 						return true;
 					}
@@ -126,17 +118,8 @@ public class MainActivity extends Activity {
 					}
 					@Override
 					public boolean onSingleTapConfirmed(MotionEvent e) {
-						debuglog(cursor);
-						mSwitcher.setInAnimation(inFromRightAnimation());
-						mSwitcher.setOutAnimation(outToLeftAnimation());
-						if (face) {
-							mTextView[1-mSwitcher.getDisplayedChild()].setText(cursor.getString(2));
-							mSwitcher.getChildAt(1-mSwitcher.getDisplayedChild()).setBackgroundColor(getResources().getColor(R.color.bcgrd_translation));
-						} else {
-							mTextView[1-mSwitcher.getDisplayedChild()].setText(cursor.getString(1));
-							mSwitcher.getChildAt(1-mSwitcher.getDisplayedChild()).setBackgroundColor(getResources().getColor(R.color.bcgrd_word));
-						}
-						mSwitcher.showPrevious();
+						
+						tvTranslation.setText(currentCard.translation);
 						
 						return true;
 					}
@@ -145,7 +128,6 @@ public class MainActivity extends Activity {
 		
 		
 		
-		*/
 	}
 	
 	/////////////////////////////////////////
@@ -155,7 +137,10 @@ public class MainActivity extends Activity {
 	/////////////////////////////////////////
 	
 	private void showCard() {
-		//TODO
+		currentCard=deck.getCard();
+		tvWord.setText(currentCard.word);
+		tvQuality.setText(currentCard.quality);
+		tvTranslation.setText("");
 	}
 	
 	
@@ -163,7 +148,23 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onStart() {
 		Log.d(dbgTag, "onStart");
-		//TODO
+		
+		
+		dbTags = CardsDatabase.readTags(this);	
+		ArrayAdapter<CharSequence> adapterT = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
+
+		for (String t:dbTags) {
+		adapterT.add(t);
+		}
+		adapterT.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinnerTag.setAdapter(adapterT);
+		
+		
+		if (deck==null) 
+			deck = new Deck(null, this);
+		
+		showCard();
+		
 		super.onStart();
 	}
 	
@@ -178,7 +179,7 @@ public class MainActivity extends Activity {
 	@Override 
 	public boolean onTouchEvent(MotionEvent event) {
 		Log.d(dbgTag, "on touch");
-		if (cursor.getCount()>0) {
+		if (!deck.isEmpty()) {
 			return mGestureDetector.onTouchEvent(event);
 		} else {
 			Intent intent = new Intent(MainActivity.this,CardEditActivity.class);
