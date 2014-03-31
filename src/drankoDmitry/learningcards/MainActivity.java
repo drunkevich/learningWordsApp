@@ -53,7 +53,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		
 		
-		mSwitcher = (ViewFlipper) findViewById(R.id.viewSwitcher1);
+	/*	mSwitcher = (ViewFlipper) findViewById(R.id.viewSwitcher1);
 		mTextView[0] = (TextView) findViewById(R.id.textView1);
 		mTextView[1] = (TextView) findViewById(R.id.textView2);
 		
@@ -147,7 +147,7 @@ public class MainActivity extends Activity {
 				
 			}
 		});
-		
+		*/
 	}
 	
 	/////////////////////////////////////////

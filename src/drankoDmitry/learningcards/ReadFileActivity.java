@@ -22,6 +22,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+//TODO
+//TODO rewrite all readings and move that in database class
+//TODO
 public class ReadFileActivity extends Activity {
 
 	private static final String LOG_TAG = "myDBG";
