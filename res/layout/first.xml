@@ -12,7 +12,7 @@
         android:background="@color/bcgrd_word" >
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/textWord"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -21,7 +21,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/textzero"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -43,7 +43,7 @@
         android:background="@color/bcgrd_translation" >
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/textTranslation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -52,7 +52,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/textQuality"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -63,7 +63,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <ImageButton
-            android:id="@+id/imageButton1"
+            android:id="@+id/imageButtonEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

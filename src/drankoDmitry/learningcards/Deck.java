@@ -1,41 +1,46 @@
 package drankoDmitry.learningcards;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.Random;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
 public class Deck {
 	
+	private Context context;
 	private Random random = new Random();
-	private ArrayList<Card> base;
-	private ArrayList<Card> randomized;
+	private LinkedList<Card> base;
+	private LinkedList<Card> randomized;
 	public static enum OrderType {BY_ID,PURE_RANDOM,RANDOM_BY_QUALITY};
 	private OrderType order = OrderType.PURE_RANDOM; //TODO temp
 	private String deckTag;
 	
 	public Deck(String tag, Context ctx) {
+		context = ctx;
 		deckTag = tag;
 		Cursor c = CardsDatabase.readCards(tag, ctx);
 		if (c.moveToFirst()!=false) {
 			//TODO empty cursor
 		}
-		base = new ArrayList<Deck.Card>();
+		base = new LinkedList<Deck.Card>();
 		base.add(new Card(c.getInt(0),c.getString(1),c.getString(2),c.getString(3),c.getInt(4)));
 		while (c.moveToNext()!=false) {
 			base.add(new Card(c.getInt(0),c.getString(1),c.getString(2),c.getString(3),c.getInt(4)));
 		}
 		c.close();
-		shaffle();
+		shuffle();
 	}
 	
 	
-	public void shaffle() {
-		randomized = new ArrayList<Deck.Card>();
+	public void shuffle() {
+		randomized = new LinkedList<Deck.Card>(base);
 		switch (order) {
 		case PURE_RANDOM :
-			shafflePureRandom();
+			shufflePureRandom();
 			break;
 		default :
 			//TODO
@@ -45,13 +50,54 @@ public class Deck {
 	}
 
 
-	private void shafflePureRandom() {
-		for (Card card : base) {
-				randomized.add(random.nextInt(randomized.size()+1), card);
-		}
-		
+	private void shufflePureRandom() {
+		Collections.shuffle(randomized);
 	}
-
+	
+	public Deck.Card getCard() {
+		Deck.Card dc = randomized.removeFirst();
+		randomized.addLast(dc);
+		return dc;
+	}
+	
+	public boolean editCard(int _id, String _word, String _translation, String _tag, int _quality) {
+		for (Deck.Card dc : base) {
+			if (dc.id == _id) {
+				ContentValues contentValues = new ContentValues();
+				if (dc.word != _word) {
+					dc.word = _word;
+					contentValues.put(CardsDatabase.WORD, _word);
+				}
+				if (dc.translation != _translation){
+					dc.translation = _translation;
+					contentValues.put(CardsDatabase.TRANSLATION,_translation);
+				}
+				if (dc.tag != _tag) {
+					dc.tag = _tag;
+					contentValues.put(CardsDatabase.TAG, _tag);
+				}
+				if (dc.quality != _quality) {
+					dc.quality = _quality;
+					contentValues.put(CardsDatabase.QUALITY, _quality);
+				}
+				CardsDatabase.updateCard(_id, contentValues, context);
+				contentValues.clear();
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean deleteCard(int _id) {
+		for (Deck.Card dc : base) {
+			if (dc.id == _id) {
+				base.remove(dc);
+				CardsDatabase.deleteCard(_id, context);
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public class Card {
 		int id; 

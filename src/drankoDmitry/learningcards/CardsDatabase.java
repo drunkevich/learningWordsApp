@@ -104,7 +104,7 @@ public class CardsDatabase extends SQLiteOpenHelper {
 		db.close();
 	}
 
-	public static void deleteCard(String id, Context ctx) {
+	public static void deleteCard(int id, Context ctx) {
 		String query = "DELETE FROM "+CardsDatabase.TABLE_NAME+" WHERE "+CardsDatabase._ID+" = "+id;
 		Log.d("sql query", query);
 		CardsDatabase helper = new CardsDatabase(ctx);
@@ -121,6 +121,8 @@ public class CardsDatabase extends SQLiteOpenHelper {
 		db.close();
 		updatedValues.clear();
 	}
+
+	
 	
 	
 	

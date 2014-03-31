@@ -25,6 +25,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -34,32 +35,72 @@ public class MainActivity extends Activity {
 	
 	private Cursor cursor;
 	private Random random = new Random();
-	private ViewFlipper mSwitcher;
-	private TextView[] mTextView = new TextView[2];
+	private TextView tvWord;
+	private TextView tvTranslation;
+	private TextView tvQuality;
+	private ImageButton ibManageDeck;
+	private ImageButton ibEdit;
+	private Spinner spinnerTag;
 	private GestureDetector mGestureDetector;
-	private boolean face = true;
 	private ArrayList<String> dbTags = new ArrayList<String>();
 	private String currentTag;
-	private int currentQ=0;
-	private Spinner spinnerQuality;
-	private Spinner spinnerTag;
 	private String dbgTag = "dbgTag";
 	private int SELECT_DECK_REQUEST_CODE = 1;
 	private int ADD_CARDS = 2;
 	private static int RANDOM_CARD = -1; 
+	private Deck deck;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
 		
-	/*	mSwitcher = (ViewFlipper) findViewById(R.id.viewSwitcher1);
-		mTextView[0] = (TextView) findViewById(R.id.textView1);
-		mTextView[1] = (TextView) findViewById(R.id.textView2);
+	tvWord = (TextView) findViewById(R.id.textWord);
+	tvTranslation = (TextView) findViewById(R.id.textTranslation);
+	tvQuality = (TextView) findViewById(R.id.textQuality);
+	ibManageDeck = (ImageButton) findViewById(R.id.imageButtonManageDeck);
+	ibEdit = (ImageButton) findViewById(R.id.imageButtonEdit);
+	spinnerTag = (Spinner) findViewById(R.id.spinnerSetTag);
 		
-		
-		
-		mGestureDetector = new GestureDetector(this,
+	
+	
+	spinnerTag.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+		@Override
+		public void onItemSelected(AdapterView<?> arg0, View arg1,
+				int arg2, long arg3) {
+			final String newT = arg0.getSelectedItem().toString();
+			String oldT = cursor.getString(3);
+			if (!newT.equals(oldT)) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+				//TODO hard code
+				builder.setMessage("select deck with tag "+newT+"?").setTitle(R.string.selectDeck);			
+				builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+		           public void onClick(DialogInterface dialog, int id) {
+		        	   deck = new Deck(newT, MainActivity.this);
+		        	   showCard();
+		           }
+
+				});
+				builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+		           public void onClick(DialogInterface dialog, int id) {
+		        	   
+		           }
+				});
+				AlertDialog dialog = builder.create();
+				dialog.show();
+			}
+		}
+
+		@Override
+		public void onNothingSelected(AdapterView<?> arg0) {
+			
+		}
+	});
+	
+	
+	
+		/*mGestureDetector = new GestureDetector(this,
 				new GestureDetector.SimpleOnGestureListener() {
 					@Override
 					public boolean onFling(MotionEvent e1, MotionEvent e2,
@@ -104,49 +145,6 @@ public class MainActivity extends Activity {
 		
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		spinnerTag = (Spinner) findViewById(R.id.spinner1);
-		spinnerTag.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int arg2, long arg3) {
-				final String newT = arg0.getSelectedItem().toString();
-				String oldT = cursor.getString(3);
-				if (!newT.equals(oldT)) {
-					AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-					//TODO hard code
-					builder.setMessage("change deck with tag "+oldT+" to "+newT+"?").setTitle(R.string.selectDeck);			
-					builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-			           public void onClick(DialogInterface dialog, int id) {
-			        	   //TODO change deck
-			           }
-
-					
-					});
-					builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-			           public void onClick(DialogInterface dialog, int id) {
-			        	   
-			           }
-					});
-					AlertDialog dialog = builder.create();
-					dialog.show();
-				}
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-				
-			}
-		});
 		*/
 	}
 	
@@ -156,7 +154,9 @@ public class MainActivity extends Activity {
 	/////////////////////////////////////////
 	/////////////////////////////////////////
 	
-	
+	private void showCard() {
+		//TODO
+	}
 	
 	
 
@@ -235,15 +235,13 @@ public class MainActivity extends Activity {
 		outtoLeft.setInterpolator(new LinearInterpolator());
 		return outtoLeft;
 	}
-	
+	//TODO saved instance
 	protected void onSaveInstanceState(Bundle outState) {
 	    outState.putString("currentTag", currentTag);
-	    outState.putInt("currentQ", currentQ);
 	    super.onSaveInstanceState(outState);
 	  }
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 	    currentTag = savedInstanceState.getString("currentTag");
-	    currentQ = savedInstanceState.getInt("currentQ");
 	    super.onRestoreInstanceState(savedInstanceState);
 	  }
 	
