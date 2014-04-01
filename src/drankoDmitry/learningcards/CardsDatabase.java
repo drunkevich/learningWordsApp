@@ -1,6 +1,9 @@
 package drankoDmitry.learningcards;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+
+import drankoDmitry.learningcards.Deck.Card;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -53,7 +56,7 @@ public class CardsDatabase extends SQLiteOpenHelper {
 	
 
 	
-	public static Cursor readCards(String tag, Context ctx) {
+	public static LinkedList<Card> readCards(String tag, Context ctx) {
 			String query;
 		if (tag==null){
 			query = "SELECT * from "+CardsDatabase.TABLE_NAME;
@@ -64,9 +67,20 @@ public class CardsDatabase extends SQLiteOpenHelper {
 		CardsDatabase helper = new CardsDatabase(ctx);
 		SQLiteDatabase db = helper.getReadableDatabase();
 		Cursor c= db.rawQuery(query, null);
-		db.close();
 		Log.d("sql query", "query complite");
-		return c;
+		LinkedList<Deck.Card> base = new LinkedList<Deck.Card>();
+		if (c.moveToFirst()==false) {
+			//TODO empty cursor
+			base.add(new Card(0," "," "," ",0));
+		} else {
+			base.add(new Card(c.getInt(0),c.getString(1),c.getString(2),c.getString(3),c.getInt(4)));
+			while (c.moveToNext()!=false) {
+				base.add(new Card(c.getInt(0),c.getString(1),c.getString(2),c.getString(3),c.getInt(4)));
+			}
+		}
+		c.close();
+		db.close();
+		return base;
 	}
 	
 	public static ArrayList<String> readTags(Context ctx) {
@@ -76,15 +90,16 @@ public class CardsDatabase extends SQLiteOpenHelper {
 		CardsDatabase helper = new CardsDatabase(ctx);
 		SQLiteDatabase db = helper.getReadableDatabase();
 		Cursor c = db.rawQuery(query, null);
-		db.close();
+		c.moveToFirst();
+		Log.d("getting tags", ""+c.getCount());
 		if (c.getCount()>0) {
-			c.moveToFirst();
 			result.add(c.getString(0));
 			while (c.moveToNext()) {
 				result.add(c.getString(0));	
 			}
 		}
 		c.close();
+		db.close();
 		return result;
 		
 	}
@@ -113,7 +128,6 @@ public class CardsDatabase extends SQLiteOpenHelper {
 		db.close();
 	}
 	
-	
 	public static void updateCard(int id, ContentValues updatedValues ,Context ctx) {
 		CardsDatabase helper = new CardsDatabase(ctx);
 		SQLiteDatabase db = helper.getWritableDatabase();
@@ -121,9 +135,5 @@ public class CardsDatabase extends SQLiteOpenHelper {
 		db.close();
 		updatedValues.clear();
 	}
-
-	
-	
-	
 	
 }

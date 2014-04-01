@@ -45,4 +45,5 @@
     <string name="select_deck">select deck</string>
     <string name="add_cards">add cards</string>
     <string name="selectDeck">selectDeck</string>
+    <string name="changeQuality">changeQuality?</string>
 </resources>

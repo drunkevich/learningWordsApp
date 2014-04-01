@@ -22,16 +22,7 @@ public class Deck {
 	public Deck(String tag, Context ctx) {
 		context = ctx;
 		deckTag = tag;
-		Cursor c = CardsDatabase.readCards(tag, ctx);
-		if (c.moveToFirst()!=false) {
-			//TODO empty cursor
-		}
-		base = new LinkedList<Deck.Card>();
-		base.add(new Card(c.getInt(0),c.getString(1),c.getString(2),c.getString(3),c.getInt(4)));
-		while (c.moveToNext()!=false) {
-			base.add(new Card(c.getInt(0),c.getString(1),c.getString(2),c.getString(3),c.getInt(4)));
-		}
-		c.close();
+		base = CardsDatabase.readCards(tag, ctx);
 		shuffle();
 	}
 	
@@ -63,6 +54,7 @@ public class Deck {
 	public boolean editCard(int _id, String _word, String _translation, String _tag, int _quality) {
 		for (Deck.Card dc : base) {
 			if (dc.id == _id) {
+				//TODO deleting card with wrong tag
 				ContentValues contentValues = new ContentValues();
 				if (dc.word != _word) {
 					dc.word = _word;
@@ -99,7 +91,7 @@ public class Deck {
 		return false;
 	}
 
-	public class Card {
+	public static class Card {
 		int id; 
 		String word;
 		String translation;

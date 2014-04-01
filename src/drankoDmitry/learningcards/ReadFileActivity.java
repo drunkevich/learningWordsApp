@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 public class ReadFileActivity extends Activity {
 
 	private static final String LOG_TAG = "myDBG";
+	protected static final int REQUEST_IMAGE_GET = 5;
 	EditText path;
 	EditText tag;
 	EditText quality;
@@ -51,8 +53,20 @@ public class ReadFileActivity extends Activity {
 				readFile();
 				Toast.makeText(ReadFileActivity.this, "success", Toast.LENGTH_SHORT).show();	
 			}
+		});
+		
+		Button requestFile = (Button) findViewById(R.id.requestFile);
+		requestFile.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+			    intent.setType("text/plain");
 
-			
+			    if (intent.resolveActivity(getPackageManager()) != null) {
+			        startActivityForResult(intent, REQUEST_IMAGE_GET);
+			    }
+
+			}
 		});
 		
 	}
@@ -194,5 +208,13 @@ public class ReadFileActivity extends Activity {
 			      }
 		
 	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    if (requestCode == REQUEST_IMAGE_GET && resultCode == RESULT_OK) {
+	       Log.d("intent","back");
+	    }
+	}
+	
 }
 

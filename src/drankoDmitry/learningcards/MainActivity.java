@@ -15,10 +15,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.TranslateAnimation;
@@ -55,18 +57,64 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		
+
+	cardView = findViewById(R.id.cardView);
 	tvWord = (TextView) findViewById(R.id.textWord);
 	tvTranslation = (TextView) findViewById(R.id.textTranslation);
-	tvQuality = (TextView) findViewById(R.id.textQuality);
-	ibManageDeck = (ImageButton) findViewById(R.id.imageButtonManageDeck);
+	
+	
 	ibEdit = (ImageButton) findViewById(R.id.imageButtonEdit);
+	ibEdit.setOnClickListener(new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+		    LayoutInflater inflater = MainActivity.this.getLayoutInflater();
+		    builder.setView(inflater.inflate(R.layout.activity_adding_card_manually, null))
+		    // Add action buttons
+		           .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+		               @Override
+		               public void onClick(DialogInterface dialog, int id) {
+		                   // TODO
+		            	   Log.d("dialog","ok");
+		               }
+		           })
+		           .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+		               public void onClick(DialogInterface dialog, int id) {
+		                   Log.d("dialog","cancel");
+		               }
+		           });      
+		    builder.create().show();
+		}
+	});
+	
+	
+	tvQuality = (TextView) findViewById(R.id.textQuality);
+	tvQuality.setOnClickListener(new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			Log.d("ui", "onClick at quality");
+			AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+		    builder.setTitle(R.string.changeQuality)
+		           .setItems(R.array.Qualities, new DialogInterface.OnClickListener() {
+		               public void onClick(DialogInterface dialog, int n) {
+		               currentCard.quality = n+1;
+		               tvQuality.setText(""+currentCard.quality);
+		               ContentValues cv = new ContentValues();
+		               cv.put(CardsDatabase.QUALITY, n+1);
+		               CardsDatabase.updateCard(currentCard.id, cv, MainActivity.this);
+		           }
+		    });
+		    builder.create().show();
+		}
+	});
+	
+	
+	ibManageDeck = (ImageButton) findViewById(R.id.imageButtonManageDeck);
+	//TODO button
+	
+	
 	spinnerTag = (Spinner) findViewById(R.id.spinnerSetTag);
-	cardView = findViewById(R.id.cardView);
-	
-	
 	spinnerTag.setOnItemSelectedListener(new OnItemSelectedListener() {
-
 		@Override
 		public void onItemSelected(AdapterView<?> arg0, View arg1,
 				int arg2, long arg3) {
@@ -139,7 +187,7 @@ public class MainActivity extends Activity {
 	private void showCard() {
 		currentCard=deck.getCard();
 		tvWord.setText(currentCard.word);
-		tvQuality.setText(currentCard.quality);
+		tvQuality.setText(""+currentCard.quality);
 		tvTranslation.setText("");
 	}
 	
@@ -154,27 +202,21 @@ public class MainActivity extends Activity {
 		ArrayAdapter<CharSequence> adapterT = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
 
 		for (String t:dbTags) {
-		adapterT.add(t);
+			Log.d(dbgTag, t);
+			adapterT.add(t);
 		}
 		adapterT.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinnerTag.setAdapter(adapterT);
 		
 		
 		if (deck==null) 
-			deck = new Deck(null, this);
+			deck = new Deck(currentTag, this);
 		
 		showCard();
 		
 		super.onStart();
 	}
 	
-		
-	private void debuglog(Cursor c) {
-		
-		String msg = c.getString(0)+" "+c.getString(1)+" "+c.getString(2)+" "+c.getString(3)+" "+c.getString(4);
-		Log.d("current card log", msg);
-		
-	}
 //TODO ?
 	@Override 
 	public boolean onTouchEvent(MotionEvent event) {
@@ -189,8 +231,6 @@ public class MainActivity extends Activity {
 		}
 	}
 
- 
-	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
