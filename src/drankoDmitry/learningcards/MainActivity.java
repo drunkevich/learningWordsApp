@@ -6,6 +6,7 @@ import java.util.Random;
 import drankoDmitry.learningcards.R;
 
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -175,6 +176,21 @@ public class MainActivity extends Activity {
 				});
 		
 		
+		
+		
+		 final Intent intent = getIntent();  
+	        final String action = intent.getAction();
+
+	        if(Intent.ACTION_VIEW.equals(action)){
+	            //uri = intent.getStringExtra("URI");
+	            Uri uri2 = intent.getData();
+	            String uri = uri2.getEncodedPath() + "  complete: " + uri2.toString();
+	            Log.d("catching file", uri);
+	            // now you call whatever function your app uses 
+	            // to consume the txt file whose location you now know 
+	        } else {
+	            Log.d("catching file", "intent was something else: "+action);
+	        }
 		
 	}
 	
