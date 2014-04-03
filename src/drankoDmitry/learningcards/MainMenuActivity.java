@@ -3,9 +3,11 @@ package drankoDmitry.learningcards;
 
 import drankoDmitry.learningcards.R;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,63 +15,56 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.content.Intent;
 
-public class CardEditActivity extends Activity {
+public class MainMenuActivity extends Activity {
 	
 	
 	protected static final int GET_TEXT_FILE = 1;
-	private boolean startAlert = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
         
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_card_edit);
+		setContentView(R.layout.activity_main_menu);
 		
-		Button addCard = (Button) findViewById(R.id.add_card);
+		Button learnCard = (Button) findViewById(R.id.learn_cards);
+		
+		learnCard.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(MainMenuActivity.this,MainActivity.class));
+							
+				}
+			});
+		
+		Button addCard = (Button) findViewById(R.id.add_cards);
 		
 		addCard.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(CardEditActivity.this,AddingCardManuallyActivity.class));
+				startActivity(new Intent(MainMenuActivity.this,AddingCardManuallyActivity.class));
 							
 				}
 			});
-		Button readFile = (Button) findViewById(R.id.read_file);
-		readFile.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				startActivity(new Intent(CardEditActivity.this,ReadFileActivity.class));	
-			}
-		});
 		
+		 final Intent intent = getIntent();  
+	        final String action = intent.getAction();
+
+	        if(Intent.ACTION_VIEW.equals(action)){
+	            //uri = intent.getStringExtra("URI");
+	            Uri uri2 = intent.getData();
+	            String uri = uri2.getEncodedPath() + "  complete: " + uri2.toString();
+	            Log.d("catching file", uri);
+	        } else {
+	            Log.d("catching file", "intent was something else: "+action);
+	        }
 		
-		startAlert = getIntent().getExtras().getBoolean("force alert");
-		if (startAlert) {
-			
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-			
-			builder.setMessage(R.string.dialog_no_cards).setTitle(R.string.dialog_no_cards_title);
-
-			
-			AlertDialog dialog = builder.create();
-			dialog.show();
-		}
 	}
 
 	
-	@Override
-	public void onBackPressed() {
-		if (startAlert) {
-			setResult(RESULT_CANCELED);
-			finish();
-		} else {
-			super.onBackPressed();
-		}
-	}
+	
 	
 
 	@Override

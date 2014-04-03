@@ -115,6 +115,15 @@ public class MainActivity extends Activity {
 	
 	
 	spinnerTag = (Spinner) findViewById(R.id.spinnerSetTag);
+	dbTags = CardsDatabase.readTags(this);	
+	ArrayAdapter<CharSequence> adapterT = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
+
+	for (String t:dbTags) {
+		Log.d(dbgTag, t);
+		adapterT.add(t);
+	}
+	adapterT.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+	spinnerTag.setAdapter(adapterT);
 	spinnerTag.setOnItemSelectedListener(new OnItemSelectedListener() {
 		@Override
 		public void onItemSelected(AdapterView<?> arg0, View arg1,
@@ -147,8 +156,7 @@ public class MainActivity extends Activity {
 			
 		}
 	});
-	
-	
+
 	
 		mGestureDetector = new GestureDetector(this,
 				new GestureDetector.SimpleOnGestureListener() {
@@ -176,21 +184,15 @@ public class MainActivity extends Activity {
 				});
 		
 		
+		//TODO???
+		if (deck==null) 
+			deck = new Deck(currentTag, this);
+		
+		showCard();
 		
 		
-		 final Intent intent = getIntent();  
-	        final String action = intent.getAction();
-
-	        if(Intent.ACTION_VIEW.equals(action)){
-	            //uri = intent.getStringExtra("URI");
-	            Uri uri2 = intent.getData();
-	            String uri = uri2.getEncodedPath() + "  complete: " + uri2.toString();
-	            Log.d("catching file", uri);
-	            // now you call whatever function your app uses 
-	            // to consume the txt file whose location you now know 
-	        } else {
-	            Log.d("catching file", "intent was something else: "+action);
-	        }
+		
+		
 		
 	}
 	
@@ -209,30 +211,6 @@ public class MainActivity extends Activity {
 	
 	
 
-	@Override
-	protected void onStart() {
-		Log.d(dbgTag, "onStart");
-		
-		
-		dbTags = CardsDatabase.readTags(this);	
-		ArrayAdapter<CharSequence> adapterT = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
-
-		for (String t:dbTags) {
-			Log.d(dbgTag, t);
-			adapterT.add(t);
-		}
-		adapterT.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinnerTag.setAdapter(adapterT);
-		
-		
-		if (deck==null) 
-			deck = new Deck(currentTag, this);
-		
-		showCard();
-		
-		super.onStart();
-	}
-	
 //TODO ?
 	@Override 
 	public boolean onTouchEvent(MotionEvent event) {
@@ -240,7 +218,7 @@ public class MainActivity extends Activity {
 		if (!deck.isEmpty()) {
 			return mGestureDetector.onTouchEvent(event);
 		} else {
-			Intent intent = new Intent(MainActivity.this,CardEditActivity.class);
+			Intent intent = new Intent(MainActivity.this,MainMenuActivity.class);
 			intent.putExtra("force alert", false); //TODO ???
 			startActivity(intent);	  
 			return false;
@@ -260,7 +238,7 @@ public class MainActivity extends Activity {
 		
 	    switch (item.getItemId()) {
 	        case R.id.editCards:
-	        	Intent intent1 = new Intent(MainActivity.this,CardEditActivity.class);
+	        	Intent intent1 = new Intent(MainActivity.this,MainMenuActivity.class);
 				intent1.putExtra("force alert", false);
 				startActivity(intent1);	            
 	            return true;
@@ -304,16 +282,6 @@ public class MainActivity extends Activity {
 	
 	
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == ADD_CARDS) {
-			if (resultCode == RESULT_CANCELED){
-				//if () {
-				//	finish();
-				//}
-			}
-		}
-
-	}
+	
 	
 }

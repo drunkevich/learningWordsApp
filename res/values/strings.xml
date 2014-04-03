@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">LearningCards</string>
+    <string name="app_activity">LearningCards</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="nextCard">" next card"</string>
@@ -37,7 +38,7 @@
     <string name="selectCards">Select cards</string>
     <string name="title_activity_deck_chooser">DeckChooser</string>
     <string name="ok">OK</string>
-    <string name="cancel">cancel</string>
+    <string name="cancel">Cancel</string>
     <string name="dialog_no_cards">there are no cards in database. please add some</string>
 	<string name="dialog_no_cards_title">empty database</string>
 	<string name="dialog_empty_deck">select some cards or add new cards into the database</string>
@@ -46,4 +47,8 @@
     <string name="add_cards">add cards</string>
     <string name="selectDeck">selectDeck</string>
     <string name="changeQuality">changeQuality?</string>
+    <string name="learn">learn cards</string>
+    <string name="editCards">editCards</string>
+    <string name="importExport">import/Export</string>
+    <string name="help">help</string>
 </resources>
