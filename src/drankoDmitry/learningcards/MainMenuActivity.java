@@ -8,16 +8,25 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.content.DialogInterface;
 import android.content.Intent;
 
 public class MainMenuActivity extends Activity {
 	
-	
+	private EditText et;
+	private TextView tv;
+	private CheckBox cb;
 	protected static final int GET_TEXT_FILE = 1;
 
 	@Override
@@ -54,9 +63,9 @@ public class MainMenuActivity extends Activity {
 
 	        if(Intent.ACTION_VIEW.equals(action)){
 	            //uri = intent.getStringExtra("URI");
-	            Uri uri2 = intent.getData();
-	            String uri = uri2.getEncodedPath() + "  complete: " + uri2.toString();
-	            Log.d("catching file", uri);
+	            Uri uri = intent.getData();
+	            Log.d("catching file", uri.toString());
+	            importFile(uri);
 	        } else {
 	            Log.d("catching file", "intent was something else: "+action);
 	        }
@@ -66,6 +75,51 @@ public class MainMenuActivity extends Activity {
 	
 	
 	
+
+	private void importFile(Uri uri) {
+		final Uri u = uri;
+		String filename_txt = uri.getLastPathSegment();
+		Log.d("catching file", filename_txt);
+		String filename = filename_txt.substring(0, filename_txt.indexOf("."));
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    LayoutInflater inflater = this.getLayoutInflater();
+	    View view = inflater.inflate(R.layout.import_file_layout, null);
+	    tv = (TextView) view.findViewById(R.id.tv_import);
+	    tv.setText("import file "+filename_txt+" ?");
+	    et = (EditText) view.findViewById(R.id.et_import);
+	    et.setText(filename);
+	    cb = (CheckBox) view.findViewById(R.id.cb_import);
+	    cb.setChecked(true);
+	    cb.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					MainMenuActivity.this.et.setEnabled(isChecked);
+			}
+		});
+	    builder.setView(view);
+	    builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+	               @Override
+	               public void onClick(DialogInterface dialog, int id) {
+	            	   Log.d("dialog","ok");
+	            	   if (cb.isChecked()) {
+	            		   CardsDatabase.readFile(u, MainMenuActivity.this, et.getText().toString());
+	            	   } else {
+	            		   CardsDatabase.readFile(u, MainMenuActivity.this, null);
+	  	            	}
+	               }
+	           });
+	    builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+	               public void onClick(DialogInterface dialog, int id) {
+	                   Log.d("dialog","cancel");
+	               }
+	           });      
+	    builder.create().show();
+		
+	}
+
+
+
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

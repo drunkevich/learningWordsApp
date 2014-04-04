@@ -69,6 +69,11 @@ public class Deck {
 					contentValues.put(CardsDatabase.TAG, _tag);
 				}
 				if (dc.quality != _quality) {
+					if (_quality<1) {
+						_quality=1;
+					} else if (_quality>5) {
+						_quality=5;
+					}
 					dc.quality = _quality;
 					contentValues.put(CardsDatabase.QUALITY, _quality);
 				}

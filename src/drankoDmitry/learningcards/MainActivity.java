@@ -1,19 +1,17 @@
 package drankoDmitry.learningcards;
 
 import java.util.ArrayList;
-import java.util.Random;
 
+import drankoDmitry.learningcards.Deck.Card;
+import drankoDmitry.learningcards.Deck.OrderType;
 import drankoDmitry.learningcards.R;
-
-
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -28,15 +26,14 @@ import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.ViewFlipper;
 
 public class MainActivity extends Activity {
 
 	
-	private Random random = new Random();
 	private View cardView;
 	private TextView tvWord;
 	private TextView tvTranslation;
@@ -47,17 +44,26 @@ public class MainActivity extends Activity {
 	private GestureDetector mGestureDetector;
 	private ArrayList<String> dbTags = new ArrayList<String>();
 	private String currentTag;
+	private boolean invert;
+	private OrderType order;
 	private String dbgTag = "dbgTag";
-	private int SELECT_DECK_REQUEST_CODE = 1;
-	private int ADD_CARDS = 2;
-	private static int RANDOM_CARD = -1; 
 	private Deck deck;
-	private Deck.Card currentCard;
+	private Card currentCard;
+	private EditText d_word;
+	private EditText d_translation;
+	private EditText d_tag;
+	private EditText d_quality;
+	SharedPreferences settings;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		settings = getSharedPreferences("preferences", 0);
+		currentTag=settings.getString("currentTag", null);
+		invert = settings.getBoolean("invert", false);
+		order = OrderType.valueOf(settings.getString("order", OrderType.PURE_RANDOM.toString()));
+
 
 	cardView = findViewById(R.id.cardView);
 	tvWord = (TextView) findViewById(R.id.textWord);
@@ -70,14 +76,25 @@ public class MainActivity extends Activity {
 		public void onClick(View v) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 		    LayoutInflater inflater = MainActivity.this.getLayoutInflater();
-		    builder.setView(inflater.inflate(R.layout.activity_adding_card_manually, null))
-		    // Add action buttons
+		    View view = inflater.inflate(R.layout.edit_card_dialog, null);
+		    d_word = (EditText) view.findViewById(R.id.word);
+		    d_word.setText(currentCard.word);
+			d_translation = (EditText) view.findViewById(R.id.translation);
+			d_translation.setText(currentCard.translation);
+			d_tag = (EditText) view.findViewById(R.id.tag);
+			d_tag.setText(currentCard.tag);
+			d_quality = (EditText) view.findViewById(R.id.quality);
+			d_quality.setText(""+currentCard.quality);
+		    builder.setView(view)
 		           .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 		               @Override
 		               public void onClick(DialogInterface dialog, int id) {
-		                   // TODO
 		            	   Log.d("dialog","ok");
+		            	   deck.editCard(currentCard.id, d_word.getText().toString(), d_translation.getText().toString(), d_tag.getText().toString(), Integer.parseInt(d_quality.getText().toString()));
+		            	   refreshCurrentCard();
 		               }
+
+					
 		           })
 		           .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 		               public void onClick(DialogInterface dialog, int id) {
@@ -111,43 +128,39 @@ public class MainActivity extends Activity {
 	
 	
 	ibManageDeck = (ImageButton) findViewById(R.id.imageButtonManageDeck);
-	//TODO button
-	
+	ibManageDeck.setOnClickListener(new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+		    LayoutInflater inflater = MainActivity.this.getLayoutInflater();
+		    View view = inflater.inflate(R.layout.manage_dialog, null);|
+		    tododo
+		}
+	});
 	
 	spinnerTag = (Spinner) findViewById(R.id.spinnerSetTag);
 	dbTags = CardsDatabase.readTags(this);	
 	ArrayAdapter<CharSequence> adapterT = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
-
+	adapterT.add("all cards");
 	for (String t:dbTags) {
 		Log.d(dbgTag, t);
 		adapterT.add(t);
 	}
 	adapterT.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	spinnerTag.setAdapter(adapterT);
+	spinnerTag.setSelection(adapterT.getPosition(currentTag));
 	spinnerTag.setOnItemSelectedListener(new OnItemSelectedListener() {
 		@Override
 		public void onItemSelected(AdapterView<?> arg0, View arg1,
 				int arg2, long arg3) {
-			final String newT = arg0.getSelectedItem().toString();
-			if (!newT.equals(currentTag)) {
-				AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-				//TODO hard code
-				builder.setMessage("select deck with tag "+newT+"?").setTitle(R.string.selectDeck);			
-				builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-		           public void onClick(DialogInterface dialog, int id) {
-		        	   currentTag = newT;
-		        	   deck = new Deck(newT, MainActivity.this);
-		        	   showCard();
-		           }
-
-				});
-				builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-		           public void onClick(DialogInterface dialog, int id) {
-		        	   
-		           }
-				});
-				AlertDialog dialog = builder.create();
-				dialog.show();
+			String newT = null;
+			if (arg2!=0) {
+				 newT = arg0.getSelectedItem().toString();
+			}
+			if (newT!=currentTag) {
+				currentTag = newT;	
+				deck = new Deck(newT, MainActivity.this);
+	        	showCard();
 			}
 		}
 
@@ -156,9 +169,11 @@ public class MainActivity extends Activity {
 			
 		}
 	});
-
 	
-		mGestureDetector = new GestureDetector(this,
+	
+	
+	
+	mGestureDetector = new GestureDetector(this,
 				new GestureDetector.SimpleOnGestureListener() {
 					@Override
 					public boolean onFling(MotionEvent e1, MotionEvent e2,
@@ -176,8 +191,11 @@ public class MainActivity extends Activity {
 					@Override
 					public boolean onSingleTapConfirmed(MotionEvent e) {
 						
-						tvTranslation.setText(currentCard.translation);
-						
+						if (!invert) {
+							tvTranslation.setText(currentCard.translation);
+						} else {
+							tvTranslation.setText(currentCard.word);
+						}
 						return true;
 					}
 					
@@ -202,14 +220,32 @@ public class MainActivity extends Activity {
 	/////////////////////////////////////////
 	/////////////////////////////////////////
 	
-	private void showCard() {
-		currentCard=deck.getCard();
-		tvWord.setText(currentCard.word);
-		tvQuality.setText(""+currentCard.quality);
-		tvTranslation.setText("");
+	@Override
+	public void onStop() {
+		SharedPreferences.Editor editor = settings.edit();
+	      editor.putBoolean("invert", invert);
+	      editor.putString("currentTag", currentTag);
+	      editor.putString("order", order.toString());
+	      editor.commit();
+		super.onStop();
 	}
 	
 	
+	
+	private void showCard() {
+		currentCard=deck.getCard();
+		refreshCurrentCard();
+	}
+	
+	private void refreshCurrentCard() {
+		if (invert) {
+			tvWord.setText(currentCard.translation);
+		} else {
+			tvWord.setText(currentCard.word);
+		}
+		tvQuality.setText(""+currentCard.quality);
+		tvTranslation.setText("");
+	}
 
 //TODO ?
 	@Override 
