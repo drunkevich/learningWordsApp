@@ -1,28 +1,23 @@
 package drankoDmitry.learningcards;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
-import java.util.Random;
-
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 
 public class Deck{
 	
 	private Context context;
-	private Random random = new Random();
 	private LinkedList<Card> base;
 	private LinkedList<Card> randomized;
 	public static enum OrderType {BY_ID,PURE_RANDOM,RANDOM_BY_QUALITY};
-	private OrderType order = OrderType.PURE_RANDOM; //TODO temp
+	private OrderType order = OrderType.PURE_RANDOM;
 	private String deckTag;
 	
-	public Deck(String tag, OrderType order, Context ctx) {
+	public Deck(String tag, OrderType _order, Context ctx) {
 		context = ctx;
 		deckTag = tag;
+		order = _order;
 		base = CardsDatabase.readCards(tag, ctx);
 		shuffle(order);
 	}

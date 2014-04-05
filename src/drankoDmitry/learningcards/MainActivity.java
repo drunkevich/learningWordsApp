@@ -247,15 +247,9 @@ public class MainActivity extends Activity {
 				});
 		
 		
-		//TODO???
 		if (deck==null) 
 			deck = new Deck(currentTag, order, this);
-		
 		showCard();
-		
-		
-		
-		
 		
 	}
 	
@@ -292,18 +286,10 @@ public class MainActivity extends Activity {
 		tvTranslation.setText("");
 	}
 
-//TODO ?
 	@Override 
 	public boolean onTouchEvent(MotionEvent event) {
 		Log.d(dbgTag, "on touch");
-		if (!deck.isEmpty()) {
 			return mGestureDetector.onTouchEvent(event);
-		} else {
-			Intent intent = new Intent(MainActivity.this,MainMenuActivity.class);
-			intent.putExtra("force alert", false); //TODO ???
-			startActivity(intent);	  
-			return false;
-		}
 	}
 
 	@Override
@@ -351,18 +337,5 @@ public class MainActivity extends Activity {
 		outtoLeft.setInterpolator(new LinearInterpolator());
 		return outtoLeft;
 	}
-	//TODO saved instance
-	protected void onSaveInstanceState(Bundle outState) {
-	    outState.putString("currentTag", currentTag);
-	    super.onSaveInstanceState(outState);
-	  }
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-	    currentTag = savedInstanceState.getString("currentTag");
-	    super.onRestoreInstanceState(savedInstanceState);
-	  }
-	
-	
-
-	
 	
 }
