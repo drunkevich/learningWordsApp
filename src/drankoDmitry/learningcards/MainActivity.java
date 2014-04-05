@@ -26,8 +26,10 @@ import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -53,6 +55,8 @@ public class MainActivity extends Activity {
 	private EditText d_translation;
 	private EditText d_tag;
 	private EditText d_quality;
+	private RadioGroup rg;
+	private CheckBox cb;
 	SharedPreferences settings;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +67,7 @@ public class MainActivity extends Activity {
 		currentTag=settings.getString("currentTag", null);
 		invert = settings.getBoolean("invert", false);
 		order = OrderType.valueOf(settings.getString("order", OrderType.PURE_RANDOM.toString()));
-
+		Log.d("order",order.name());
 
 	cardView = findViewById(R.id.cardView);
 	tvWord = (TextView) findViewById(R.id.textWord);
@@ -133,8 +137,49 @@ public class MainActivity extends Activity {
 		public void onClick(View v) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 		    LayoutInflater inflater = MainActivity.this.getLayoutInflater();
-		    View view = inflater.inflate(R.layout.manage_dialog, null);|
-		    tododo
+		    View view = inflater.inflate(R.layout.manage_dialog, null);
+		    rg = (RadioGroup) view.findViewById(R.id.radioGroup1);
+		    switch (order) {
+		    	case RANDOM_BY_QUALITY:	rg.check(R.id.radio0); break;
+		    	case PURE_RANDOM:	rg.check(R.id.radio1); break;
+		    	case BY_ID:	rg.check(R.id.radio2); break;
+		    	default: break;
+		    }
+		    
+		    cb = (CheckBox) view.findViewById(R.id.checkBox_invert);
+		    cb.setChecked(invert);
+		    builder.setView(view)
+	           .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+	               @Override
+	               public void onClick(DialogInterface dialog, int id) {
+	            	   Log.d("dialog","ok");
+	            	   boolean newInvert = cb.isChecked();
+	            	   if (newInvert!=invert) {
+	            		   invert=newInvert;
+	            		   refreshCurrentCard();
+	            	   }
+	            	   OrderType newOrder;
+	            	   switch (rg.getCheckedRadioButtonId()) {
+	   		    			case R.id.radio0:	newOrder = OrderType.RANDOM_BY_QUALITY; break;
+	   		    			case R.id.radio1:	newOrder = OrderType.PURE_RANDOM; break;
+	   		    			case R.id.radio2:	newOrder = OrderType.BY_ID; break;
+	   		    			default: newOrder = null;
+	            	   }
+	            	   Log.d("check",""+rg.getCheckedRadioButtonId());
+	            	   if (newOrder!=order) {
+	            		   order = newOrder;
+	            		   Log.d("order", order.name());
+	            		   deck = new Deck(currentTag, order, MainActivity.this);
+	            		   showCard();
+	            	   }
+	               }
+	           })
+	           .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+	               public void onClick(DialogInterface dialog, int id) {
+	                   Log.d("dialog","cancel");
+	               }
+	           });      
+	    builder.create().show();
 		}
 	});
 	
@@ -159,7 +204,7 @@ public class MainActivity extends Activity {
 			}
 			if (newT!=currentTag) {
 				currentTag = newT;	
-				deck = new Deck(newT, MainActivity.this);
+				deck = new Deck(newT, order, MainActivity.this);
 	        	showCard();
 			}
 		}
@@ -204,7 +249,7 @@ public class MainActivity extends Activity {
 		
 		//TODO???
 		if (deck==null) 
-			deck = new Deck(currentTag, this);
+			deck = new Deck(currentTag, order, this);
 		
 		showCard();
 		

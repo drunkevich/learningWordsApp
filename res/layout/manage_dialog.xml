@@ -14,25 +14,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="RadioButton" />
+            android:text="RANDOM_BY_QUALITY" />
 
         <RadioButton
             android:id="@+id/radio1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="RadioButton" />
+            android:text="PURE_RANDOM" />
 
         <RadioButton
             android:id="@+id/radio2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="RadioButton" />
+            android:text="SORT_BY_ID" />
     </RadioGroup>
 
     <CheckBox
-        android:id="@+id/checkBox1"
+        android:id="@+id/checkBox_invert"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="CheckBox" />
+        android:text="@string/invert_cards" />
 
 </LinearLayout>

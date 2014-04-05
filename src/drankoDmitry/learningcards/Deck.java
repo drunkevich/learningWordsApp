@@ -1,6 +1,7 @@
 package drankoDmitry.learningcards;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Random;
@@ -9,7 +10,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-public class Deck {
+public class Deck{
 	
 	private Context context;
 	private Random random = new Random();
@@ -19,29 +20,49 @@ public class Deck {
 	private OrderType order = OrderType.PURE_RANDOM; //TODO temp
 	private String deckTag;
 	
-	public Deck(String tag, Context ctx) {
+	public Deck(String tag, OrderType order, Context ctx) {
 		context = ctx;
 		deckTag = tag;
 		base = CardsDatabase.readCards(tag, ctx);
-		shuffle();
+		shuffle(order);
 	}
 	
 	
-	public void shuffle() {
-		randomized = new LinkedList<Deck.Card>(base);
+	public void shuffle(OrderType order) {
 		switch (order) {
-		case PURE_RANDOM :
-			shufflePureRandom();
-			break;
-		default :
-			//TODO
-			break;
+		case PURE_RANDOM: shufflePureRandom(); break;
+		case BY_ID: sortById(); break;
+		case RANDOM_BY_QUALITY: shuffleByQualiy(); break;
+		default: randomized = new LinkedList<Deck.Card>(base);break;
 		}
 		
 	}
 
 
+
+
+	private void shuffleByQualiy() {
+		randomized = new LinkedList<Deck.Card>();
+		int maxQ=1;
+		for (Card card : base) {
+			if (card.quality>maxQ)
+				maxQ=card.quality;
+		}
+		for (Card card : base) {
+			randomized.addAll(Collections.nCopies(card.getFrequency(maxQ), card));
+		}
+		Collections.shuffle(randomized);
+	}
+
+
+	private void sortById() {
+		randomized = new LinkedList<Deck.Card>(base);
+		Collections.sort(randomized);
+	}
+
+
 	private void shufflePureRandom() {
+		randomized = new LinkedList<Deck.Card>(base);
 		Collections.shuffle(randomized);
 	}
 	
@@ -96,7 +117,7 @@ public class Deck {
 		return false;
 	}
 
-	public static class Card {
+	public static class Card implements Comparable<Card>{
 		int id; 
 		String word;
 		String translation;
@@ -109,6 +130,15 @@ public class Deck {
 			translation=_translation;
 			tag=_tag;
 			quality=_quality;
+		}
+
+		public int getFrequency(int maxQ) {
+			return (int) Math.pow(3, (maxQ-this.quality));
+		}
+
+		@Override
+		public int compareTo(Card another) {
+			return (this.id-another.id);
 		}
 	}
 

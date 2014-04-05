@@ -38,9 +38,9 @@ public final class R {
         public static final int add_cards=0x7f0b000b;
         public static final int cardView=0x7f0b0008;
         public static final int cb_import=0x7f0b001b;
-        public static final int checkBox1=0x7f0b0021;
-        public static final int delete_database=0x7f0b0023;
-        public static final int editCards=0x7f0b0024;
+        public static final int checkBox_invert=0x7f0b0021;
+        public static final int delete_db=0x7f0b0024;
+        public static final int editCards=0x7f0b0023;
         public static final int edit_cards=0x7f0b000c;
         public static final int et_import=0x7f0b001c;
         public static final int file_quality=0x7f0b0012;
@@ -51,6 +51,7 @@ public final class R {
         public static final int import_export=0x7f0b000d;
         public static final int import_file=0x7f0b0013;
         public static final int learn_cards=0x7f0b000a;
+        public static final int load_test_file=0x7f0b0025;
         public static final int path=0x7f0b0010;
         public static final int quality=0x7f0b0004;
         public static final int radio0=0x7f0b001e;
@@ -61,7 +62,6 @@ public final class R {
         public static final int rl=0x7f0b0009;
         public static final int spinnerSetTag=0x7f0b0006;
         public static final int tag=0x7f0b0003;
-        public static final int testFile=0x7f0b0025;
         public static final int textQuality=0x7f0b0018;
         public static final int textTranslation=0x7f0b0017;
         public static final int textWord=0x7f0b0015;
@@ -82,10 +82,8 @@ public final class R {
     }
     public static final class menu {
         public static final int adding_card_manually=0x7f0a0000;
-        public static final int card_edit=0x7f0a0001;
-        public static final int deck_chooser=0x7f0a0002;
-        public static final int main=0x7f0a0003;
-        public static final int read_file=0x7f0a0004;
+        public static final int main=0x7f0a0001;
+        public static final int main_menu=0x7f0a0002;
     }
     public static final class raw {
         public static final int test=0x7f040000;
@@ -114,7 +112,9 @@ public final class R {
         public static final int help=0x7f070027;
         public static final int importExport=0x7f070026;
         public static final int import_file=0x7f070016;
+        public static final int invert_cards=0x7f070029;
         public static final int learn=0x7f070024;
+        public static final int load_test_file=0x7f07002a;
         public static final int nextCard=0x7f070004;
         public static final int ok=0x7f07001a;
         public static final int path=0x7f070013;

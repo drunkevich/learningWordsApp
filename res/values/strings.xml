@@ -52,4 +52,6 @@
     <string name="importExport">import/Export</string>
     <string name="help">help</string>
     <string name="gset_tag">set one tag for all cards</string>
+    <string name="invert_cards">invert cards</string>
+    <string name="load_test_file">load_test_file</string>
 </resources>
