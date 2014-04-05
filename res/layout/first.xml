@@ -62,6 +62,7 @@
             android:background="@color/bcgrd_translation"
             android:text="3"
             android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@android:color/primary_text_dark"
             android:textSize="30sp" />
 
         <ImageButton
