@@ -51,31 +51,6 @@
             android:text="Large Text"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <Button
-            android:id="@+id/textQuality"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="16dp"
-            android:layout_marginRight="16dp"
-            android:background="@color/bcgrd_translation"
-            android:text="3"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@android:color/primary_text_dark"
-            android:textSize="30sp" />
-
-        <ImageButton
-            android:id="@+id/imageButtonEdit"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="16dp"
-            android:background="@color/bcgrd_translation"
-            android:src="@android:drawable/ic_menu_edit" />
-
     </RelativeLayout>
 
 </LinearLayout>

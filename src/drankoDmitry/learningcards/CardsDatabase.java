@@ -18,7 +18,7 @@ import android.util.Log;
 public class CardsDatabase extends SQLiteOpenHelper {
 	
 	public final static String DEFAULT_TAG = "default";
-	public final static int DEFAULT_QUALITY = 3;
+	public final static int DEFAULT_QUALITY = 0;
 	public final static String TABLE_NAME = "word_cards";
 	public final static String WORD = "word";
 	public final static String TRANSLATION = "translation";
@@ -110,7 +110,7 @@ public class CardsDatabase extends SQLiteOpenHelper {
 	public static void insertCard(ContentValues values, Context ctx) {
 		CardsDatabase helper = new CardsDatabase(ctx);
 		SQLiteDatabase db = helper.getWritableDatabase();
-		testQuality(values);
+
 		db.insert(CardsDatabase.TABLE_NAME, null, values);
 		db.close();
 		values.clear();
@@ -135,7 +135,7 @@ public class CardsDatabase extends SQLiteOpenHelper {
 	public static void updateCard(int id, ContentValues updatedValues ,Context ctx) {
 		CardsDatabase helper = new CardsDatabase(ctx);
 		SQLiteDatabase db = helper.getWritableDatabase();
-		testQuality(updatedValues);
+
 		db.update(CardsDatabase.TABLE_NAME, updatedValues, CardsDatabase._ID+" = "+id, null);
 		db.close();
 		updatedValues.clear();
@@ -178,7 +178,7 @@ public class CardsDatabase extends SQLiteOpenHelper {
 	        		  }
 	        	  else 
 	        		  values.put(CardsDatabase.QUALITY, CardsDatabase.DEFAULT_QUALITY);
-	        	  testQuality(values);
+
 	        	  db.insert(CardsDatabase.TABLE_NAME, null, values);
 	        	  values.clear();
 	          }
@@ -192,19 +192,4 @@ public class CardsDatabase extends SQLiteOpenHelper {
 	      }
 	}
 
-	private static void testQuality(ContentValues values) {
-		
-		if (values.containsKey(CardsDatabase.QUALITY)) {
-			int q = values.getAsInteger(CardsDatabase.QUALITY);
-			if (q<1) {
-				values.put(CardsDatabase.QUALITY, 1);
-			} else if (q>5) {
-				values.put(CardsDatabase.QUALITY, 5);
-			}
-		}
-		
-	}
-
-	
-	
 }

@@ -26,6 +26,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -36,12 +37,11 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
 
 	
-	private View cardView;
 	private TextView tvWord;
 	private TextView tvTranslation;
-	private TextView tvQuality;
 	private ImageButton ibManageDeck;
-	private ImageButton ibEdit;
+	private Button buttonCorrect;
+	private Button buttonIncorrect;
 	private Spinner spinnerTag;
 	private GestureDetector mGestureDetector;
 	private ArrayList<String> dbTags = new ArrayList<String>();
@@ -69,67 +69,8 @@ public class MainActivity extends Activity {
 		order = OrderType.valueOf(settings.getString("order", OrderType.PURE_RANDOM.toString()));
 		Log.d("order",order.name());
 
-	cardView = findViewById(R.id.cardView);
 	tvWord = (TextView) findViewById(R.id.textWord);
 	tvTranslation = (TextView) findViewById(R.id.textTranslation);
-	
-	
-	ibEdit = (ImageButton) findViewById(R.id.imageButtonEdit);
-	ibEdit.setOnClickListener(new OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-		    LayoutInflater inflater = MainActivity.this.getLayoutInflater();
-		    View view = inflater.inflate(R.layout.edit_card_dialog, null);
-		    d_word = (EditText) view.findViewById(R.id.word);
-		    d_word.setText(currentCard.word);
-			d_translation = (EditText) view.findViewById(R.id.translation);
-			d_translation.setText(currentCard.translation);
-			d_tag = (EditText) view.findViewById(R.id.tag);
-			d_tag.setText(currentCard.tag);
-			d_quality = (EditText) view.findViewById(R.id.quality);
-			d_quality.setText(""+currentCard.quality);
-		    builder.setView(view)
-		           .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-		               @Override
-		               public void onClick(DialogInterface dialog, int id) {
-		            	   Log.d("dialog","ok");
-		            	   deck.editCard(currentCard.id, d_word.getText().toString(), d_translation.getText().toString(), d_tag.getText().toString(), Integer.parseInt(d_quality.getText().toString()));
-		            	   refreshCurrentCard();
-		               }
-
-					
-		           })
-		           .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-		               public void onClick(DialogInterface dialog, int id) {
-		                   Log.d("dialog","cancel");
-		               }
-		           });      
-		    builder.create().show();
-		}
-	});
-	
-	
-	tvQuality = (TextView) findViewById(R.id.textQuality);
-	tvQuality.setOnClickListener(new OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			Log.d("ui", "onClick at quality");
-			AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-		    builder.setTitle(R.string.changeQuality)
-		           .setItems(R.array.Qualities, new DialogInterface.OnClickListener() {
-		               public void onClick(DialogInterface dialog, int n) {
-		               currentCard.quality = n+1;
-		               tvQuality.setText(""+currentCard.quality);
-		               ContentValues cv = new ContentValues();
-		               cv.put(CardsDatabase.QUALITY, n+1);
-		               CardsDatabase.updateCard(currentCard.id, cv, MainActivity.this);
-		           }
-		    });
-		    builder.create().show();
-		}
-	});
-	
 	
 	ibManageDeck = (ImageButton) findViewById(R.id.imageButtonManageDeck);
 	ibManageDeck.setOnClickListener(new OnClickListener() {
@@ -170,7 +111,7 @@ public class MainActivity extends Activity {
 	            		   order = newOrder;
 	            		   Log.d("order", order.name());
 	            		   deck = new Deck(currentTag, order, MainActivity.this);
-	            		   showCard();
+	            		   showNextCard();
 	            	   }
 	               }
 	           })
@@ -205,7 +146,7 @@ public class MainActivity extends Activity {
 			if (newT!=currentTag) {
 				currentTag = newT;	
 				deck = new Deck(newT, order, MainActivity.this);
-	        	showCard();
+	        	showNextCard();
 			}
 		}
 
@@ -215,19 +156,27 @@ public class MainActivity extends Activity {
 		}
 	});
 	
-	
-	
+	buttonCorrect = (Button) findViewById(R.id.button_correct);
+	buttonCorrect.setOnClickListener(new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			currentCard.id++;
+			showNextCard();
+		}
+	});
+	buttonIncorrect = (Button) findViewById(R.id.button_incorrect);
+	buttonIncorrect.setOnClickListener(new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			currentCard.id--;
+			showNextCard();
+		}
+	});
 	
 	mGestureDetector = new GestureDetector(this,
 				new GestureDetector.SimpleOnGestureListener() {
-					@Override
-					public boolean onFling(MotionEvent e1, MotionEvent e2,
-							float velocityX, float velocityY) {
-						
-						showCard();
-						
-						return true;
-					}
 					
 					@Override
 					public boolean onDown(MotionEvent e) {
@@ -243,13 +192,43 @@ public class MainActivity extends Activity {
 						}
 						return true;
 					}
-					
+					@Override
+					public void onLongPress(MotionEvent e) {
+						AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+					    LayoutInflater inflater = MainActivity.this.getLayoutInflater();
+					    View view = inflater.inflate(R.layout.edit_card_dialog, null);
+					    d_word = (EditText) view.findViewById(R.id.word);
+					    d_word.setText(currentCard.word);
+						d_translation = (EditText) view.findViewById(R.id.translation);
+						d_translation.setText(currentCard.translation);
+						d_tag = (EditText) view.findViewById(R.id.tag);
+						d_tag.setText(currentCard.tag);
+						d_quality = (EditText) view.findViewById(R.id.quality);
+						d_quality.setText(""+currentCard.quality);
+					    builder.setView(view)
+					           .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+					               @Override
+					               public void onClick(DialogInterface dialog, int id) {
+					            	   Log.d("dialog","ok");
+					            	   deck.editCard(currentCard.id, d_word.getText().toString(), d_translation.getText().toString(), d_tag.getText().toString(), Integer.parseInt(d_quality.getText().toString()));
+					            	   refreshCurrentCard();
+					               }
+
+								
+					           })
+					           .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+					               public void onClick(DialogInterface dialog, int id) {
+					                   Log.d("dialog","cancel");
+					               }
+					           });      
+					    builder.create().show();
+					}
 				});
 		
 		
 		if (deck==null) 
 			deck = new Deck(currentTag, order, this);
-		showCard();
+		showNextCard();
 		
 	}
 	
@@ -271,7 +250,7 @@ public class MainActivity extends Activity {
 	
 	
 	
-	private void showCard() {
+	private void showNextCard() {
 		currentCard=deck.getCard();
 		refreshCurrentCard();
 	}
@@ -282,7 +261,6 @@ public class MainActivity extends Activity {
 		} else {
 			tvWord.setText(currentCard.word);
 		}
-		tvQuality.setText(""+currentCard.quality);
 		tvTranslation.setText("");
 	}
 
@@ -313,29 +291,6 @@ public class MainActivity extends Activity {
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
-	}
-	
-	
-	private Animation inFromRightAnimation() {
-		Animation inFromRight = new TranslateAnimation(
-				Animation.RELATIVE_TO_PARENT, +1.0f,
-				Animation.RELATIVE_TO_PARENT, 0.0f,
-				Animation.RELATIVE_TO_PARENT, 0.0f,
-				Animation.RELATIVE_TO_PARENT, 0.0f);
-		inFromRight.setDuration(300);
-		inFromRight.setInterpolator(new LinearInterpolator());
-		return inFromRight;
-	}
-
-	private Animation outToLeftAnimation() {
-		Animation outtoLeft = new TranslateAnimation(
-				Animation.RELATIVE_TO_PARENT, 0.0f,
-				Animation.RELATIVE_TO_PARENT, -1.0f,
-				Animation.RELATIVE_TO_PARENT, 0.0f,
-				Animation.RELATIVE_TO_PARENT, 0.0f);
-		outtoLeft.setDuration(300);
-		outtoLeft.setInterpolator(new LinearInterpolator());
-		return outtoLeft;
 	}
 	
 }

@@ -18,7 +18,6 @@
         <activity
             android:name="drankoDmitry.learningcards.MainActivity"
             android:label="@string/app_activity" >
-           
         </activity>
         <activity
             android:name="drankoDmitry.learningcards.MainMenuActivity"
@@ -27,19 +26,22 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="android.app.ListActivity" />
-             <intent-filter>
+
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter >
-
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="file" />
-                <data android:mimeType="*/*" />
+                <data android:mimeType="text/plain" />
                 <data android:pathPattern=".*\\.txt" />
-            </intent-filter> 
+            </intent-filter>
         </activity>
         <activity
             android:name="drankoDmitry.learningcards.AddingCardManuallyActivity"
@@ -53,7 +55,10 @@
             android:name="drankoDmitry.learningcards.ReadFileActivity"
             android:label="@string/title_activity_read_file" >
         </activity>
-       
+        <activity
+            android:name="drankoDmitry.learningcards.CardsListActivity"
+            android:label="@string/title_activity_cards_list" >
+        </activity>
     </application>
 
 </manifest>

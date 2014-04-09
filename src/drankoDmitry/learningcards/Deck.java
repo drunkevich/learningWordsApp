@@ -4,8 +4,14 @@ import java.util.Collections;
 import java.util.LinkedList;
 import android.content.ContentValues;
 import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.TextView;
 
-public class Deck{
+public class Deck extends BaseAdapter {
 	
 	private Context context;
 	private LinkedList<Card> base;
@@ -13,11 +19,13 @@ public class Deck{
 	public static enum OrderType {BY_ID,PURE_RANDOM,RANDOM_BY_QUALITY};
 	private OrderType order = OrderType.PURE_RANDOM;
 	private String deckTag;
+	private LayoutInflater inflater;
 	
 	public Deck(String tag, OrderType _order, Context ctx) {
 		context = ctx;
 		deckTag = tag;
 		order = _order;
+		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		base = CardsDatabase.readCards(tag, ctx);
 		shuffle(order);
 	}
@@ -128,7 +136,7 @@ public class Deck{
 		}
 
 		public int getFrequency(int maxQ) {
-			return (int) Math.pow(3, (maxQ-this.quality));
+			return (maxQ-this.quality+1);
 		}
 
 		@Override
@@ -142,5 +150,36 @@ public class Deck{
 			return false;
 		else 
 			return true;
+	}
+
+
+	@Override
+	public int getCount() {
+		return base.size();
+	}
+
+
+	@Override
+	public Object getItem(int arg0) {
+		return base.get(arg0);
+	}
+
+
+	@Override
+	public long getItemId(int position) {
+		// TODO ??
+		return base.get(position).id;
+	}
+
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		View view = inflater.inflate(R.layout.item_card, parent, false);
+		Card card = base.get(position);
+		((TextView) view.findViewById(R.id.itemCardWord)).setText(card.word);
+		((TextView) view.findViewById(R.id.itemCardTranslate)).setText(card.translation);
+		((TextView) view.findViewById(R.id.itemCardQ)).setText(card.quality);
+		
+		return view;
 	}
 }
