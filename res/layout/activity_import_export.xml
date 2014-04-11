@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mm"
+    android:id="@+id/ie"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bcgrd_word" >
@@ -19,34 +19,30 @@
         tools:context=".MainMenuActivity" >
 
         <Button
-            android:id="@+id/learn_cards"
+            android:id="@+id/import_file"
             android:layout_width="286dp"
             android:layout_height="wrap_content"
-            android:text="@string/learn" />
+            android:text="@string/import_file" />
 
         <Button
-            android:id="@+id/add_cards"
+            android:id="@+id/export_file"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/addCard" />
+            android:text="@string/export_file" />
 
         <Button
-            android:id="@+id/edit_cards"
+            android:id="@+id/clear_qualities"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/editCards" />
+            android:text="@string/clear_qualities" />
 
         <Button
-            android:id="@+id/import_export"
+            android:id="@+id/delete_db"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/importExport" />
+            android:text="@string/delete_database" />
 
-        <Button
-            android:id="@+id/help"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/help" />
+        
     </LinearLayout>
 
 </RelativeLayout>

@@ -63,6 +63,28 @@ public class MainMenuActivity extends Activity {
 				}
 			});
 		
+		Button editCards = (Button) findViewById(R.id.edit_cards);
+		
+		editCards.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(MainMenuActivity.this,CardsListActivity.class));
+							
+				}
+			});
+		
+		Button importExport = (Button) findViewById(R.id.import_export);
+		
+		importExport.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(MainMenuActivity.this,ImportExportActivity.class));
+							
+				}
+			});
+		
 		 final Intent intent = getIntent();  
 	        final String action = intent.getAction();
 

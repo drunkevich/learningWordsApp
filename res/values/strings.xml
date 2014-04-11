@@ -54,5 +54,8 @@
     <string name="invert_cards">invert cards</string>
     <string name="load_test_file">load_test_file</string>
     <string name="title_activity_cards_list">CardsListActivity</string>
+    <string name="title_activity_import_export">ImportExportActivity</string>
+    <string name="export_file">export_file</string>
+    <string name="clear_qualities">clear_qualities</string>
 
 </resources>

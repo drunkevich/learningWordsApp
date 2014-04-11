@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:background="@color/bcgrd_word"
     android:orientation="vertical"
-    tools:context=".DeckActivity" >
+    tools:context=".DeckActivity"
+     >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,7 +35,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="8"
-            android:layout_gravity="center_horizontal" >
+            android:layout_gravity="center_horizontal" 
+        >
         </ListView>
 
 	

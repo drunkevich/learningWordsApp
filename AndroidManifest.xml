@@ -52,12 +52,13 @@
                 android:value="com.example.learningcards.MainActivity" />
         </activity>
         <activity
-            android:name="drankoDmitry.learningcards.ReadFileActivity"
-            android:label="@string/title_activity_read_file" >
-        </activity>
-        <activity
             android:name="drankoDmitry.learningcards.CardsListActivity"
             android:label="@string/title_activity_cards_list" >
+        </activity>
+        <activity
+            android:name="drankoDmitry.learningcards.ImportExportActivity"
+            android:label="@string/title_activity_import_export" >
+                       
         </activity>
     </application>
 

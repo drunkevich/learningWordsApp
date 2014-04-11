@@ -2,6 +2,8 @@ package drankoDmitry.learningcards;
 
 import java.util.Collections;
 import java.util.LinkedList;
+
+import drankoDmitry.learningcards.Deck.Card;
 import android.content.ContentValues;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -75,10 +77,10 @@ public class Deck extends BaseAdapter {
 		return dc;
 	}
 	
-	public boolean editCard(int _id, String _word, String _translation, String _tag, int _quality) {
+	public void editCard(int _id, String _word, String _translation, String _tag, int _quality) {
+		
 		for (Deck.Card dc : base) {
 			if (dc.id == _id) {
-				//TODO deleting card with wrong tag
 				ContentValues contentValues = new ContentValues();
 				if (dc.word != _word) {
 					dc.word = _word;
@@ -90,23 +92,17 @@ public class Deck extends BaseAdapter {
 				}
 				if (dc.tag != _tag) {
 					dc.tag = _tag;
+					
 					contentValues.put(CardsDatabase.TAG, _tag);
 				}
 				if (dc.quality != _quality) {
-					if (_quality<1) {
-						_quality=1;
-					} else if (_quality>5) {
-						_quality=5;
-					}
 					dc.quality = _quality;
 					contentValues.put(CardsDatabase.QUALITY, _quality);
 				}
 				CardsDatabase.updateCard(_id, contentValues, context);
 				contentValues.clear();
-				return true;
 			}
 		}
-		return false;
 	}
 	
 	public boolean deleteCard(int _id) {
@@ -168,7 +164,7 @@ public class Deck extends BaseAdapter {
 	@Override
 	public long getItemId(int position) {
 		// TODO ??
-		return base.get(position).id;
+		return position;
 	}
 
 
@@ -177,9 +173,10 @@ public class Deck extends BaseAdapter {
 		View view = inflater.inflate(R.layout.item_card, parent, false);
 		Card card = base.get(position);
 		((TextView) view.findViewById(R.id.itemCardWord)).setText(card.word);
-		((TextView) view.findViewById(R.id.itemCardTranslate)).setText(card.translation);
-		((TextView) view.findViewById(R.id.itemCardQ)).setText(card.quality);
+		((TextView) view.findViewById(R.id.itemCardTranslate)).setText(card.translation+" ");
+		((TextView) view.findViewById(R.id.itemCardQ)).setText(" "+card.quality+" ");
 		
 		return view;
 	}
+
 }

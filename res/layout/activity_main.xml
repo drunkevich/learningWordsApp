@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".DeckActivity" 
-    android:background="@color/bcgrd_word" >
+    android:background="@color/bcgrd_word" 
+    >
 
     <LinearLayout
         android:layout_width="match_parent"

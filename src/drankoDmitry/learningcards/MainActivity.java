@@ -125,16 +125,7 @@ public class MainActivity extends Activity {
 	});
 	
 	spinnerTag = (Spinner) findViewById(R.id.spinnerSetTag);
-	dbTags = CardsDatabase.readTags(this);	
-	ArrayAdapter<CharSequence> adapterT = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
-	adapterT.add("all cards");
-	for (String t:dbTags) {
-		Log.d(dbgTag, t);
-		adapterT.add(t);
-	}
-	adapterT.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-	spinnerTag.setAdapter(adapterT);
-	spinnerTag.setSelection(adapterT.getPosition(currentTag));
+	refreshTags();
 	spinnerTag.setOnItemSelectedListener(new OnItemSelectedListener() {
 		@Override
 		public void onItemSelected(AdapterView<?> arg0, View arg1,
@@ -210,9 +201,17 @@ public class MainActivity extends Activity {
 					               @Override
 					               public void onClick(DialogInterface dialog, int id) {
 					            	   Log.d("dialog","ok");
-					            	   deck.editCard(currentCard.id, d_word.getText().toString(), d_translation.getText().toString(), d_tag.getText().toString(), Integer.parseInt(d_quality.getText().toString()));
-					            	   refreshCurrentCard();
+					            	  deck.editCard(currentCard.id, d_word.getText().toString(), d_translation.getText().toString(), d_tag.getText().toString(), Integer.parseInt(d_quality.getText().toString()));
+					            	  if (d_tag.equals(currentCard.tag)) {
+					            		  refreshCurrentCard();
+					            	  } else {
+					            		  refreshTags();
+					            		  deck = new Deck(currentTag, order, MainActivity.this);
+					            		  showNextCard();
+					            	  }
 					               }
+
+								
 
 								
 					           })
@@ -224,7 +223,6 @@ public class MainActivity extends Activity {
 					    builder.create().show();
 					}
 				});
-		
 		
 		if (deck==null) 
 			deck = new Deck(currentTag, order, this);
@@ -238,6 +236,19 @@ public class MainActivity extends Activity {
 	/////////////////////////////////////////
 	/////////////////////////////////////////
 	
+	private void refreshTags() {
+		dbTags = CardsDatabase.readTags(this);	
+		ArrayAdapter<CharSequence> adapterT = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
+		adapterT.add("all cards");
+		for (String t:dbTags) {
+			Log.d(dbgTag, t);
+			adapterT.add(t);
+		}
+		adapterT.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinnerTag.setAdapter(adapterT);
+		spinnerTag.setSelection(adapterT.getPosition(currentTag));
+	}
+
 	@Override
 	public void onStop() {
 		SharedPreferences.Editor editor = settings.edit();
@@ -254,6 +265,7 @@ public class MainActivity extends Activity {
 		currentCard=deck.getCard();
 		refreshCurrentCard();
 	}
+	
 	
 	private void refreshCurrentCard() {
 		if (invert) {
