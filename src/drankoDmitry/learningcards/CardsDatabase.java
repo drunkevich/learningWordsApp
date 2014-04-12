@@ -192,4 +192,20 @@ public class CardsDatabase extends SQLiteOpenHelper {
 	      }
 	}
 
+	public static void save(LinkedList<Card> base, Context ctx) {
+		CardsDatabase helper = new CardsDatabase(ctx);
+		SQLiteDatabase db = helper.getWritableDatabase();
+		for (Card card: base) {
+			ContentValues updatedValues = new ContentValues();
+			updatedValues.put(CardsDatabase.WORD, card.word);
+			updatedValues.put(CardsDatabase.TRANSLATION, card.translation);
+			updatedValues.put(CardsDatabase.TAG, card.tag);
+			updatedValues.put(CardsDatabase.QUALITY, card.quality);
+			db.update(CardsDatabase.TABLE_NAME, updatedValues, CardsDatabase._ID+" = "+card.id, null);
+			updatedValues.clear();
+		}
+		db.close();
+		
+	}
+
 }

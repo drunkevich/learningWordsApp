@@ -110,6 +110,7 @@ public class MainActivity extends Activity {
 	            	   if (newOrder!=order) {
 	            		   order = newOrder;
 	            		   Log.d("order", order.name());
+	            		   deck.save();
 	            		   deck = new Deck(currentTag, order, MainActivity.this);
 	            		   showNextCard();
 	            	   }
@@ -136,6 +137,7 @@ public class MainActivity extends Activity {
 			}
 			if (newT!=currentTag) {
 				currentTag = newT;	
+				deck.save();
 				deck = new Deck(newT, order, MainActivity.this);
 	        	showNextCard();
 			}
@@ -152,7 +154,7 @@ public class MainActivity extends Activity {
 		
 		@Override
 		public void onClick(View v) {
-			currentCard.id++;
+			currentCard.quality++;
 			showNextCard();
 		}
 	});
@@ -161,7 +163,7 @@ public class MainActivity extends Activity {
 		
 		@Override
 		public void onClick(View v) {
-			currentCard.id--;
+			currentCard.quality--;
 			showNextCard();
 		}
 	});
@@ -206,6 +208,7 @@ public class MainActivity extends Activity {
 					            		  refreshCurrentCard();
 					            	  } else {
 					            		  refreshTags();
+					            		  deck.save();
 					            		  deck = new Deck(currentTag, order, MainActivity.this);
 					            		  showNextCard();
 					            	  }
@@ -224,8 +227,10 @@ public class MainActivity extends Activity {
 					}
 				});
 		
-		if (deck==null) 
+		if (deck==null) {
 			deck = new Deck(currentTag, order, this);
+		}
+			
 		showNextCard();
 		
 	}
@@ -251,6 +256,7 @@ public class MainActivity extends Activity {
 
 	@Override
 	public void onStop() {
+		deck.save();
 		SharedPreferences.Editor editor = settings.edit();
 	      editor.putBoolean("invert", invert);
 	      editor.putString("currentTag", currentTag);

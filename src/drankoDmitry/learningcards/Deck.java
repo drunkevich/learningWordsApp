@@ -37,7 +37,7 @@ public class Deck extends BaseAdapter {
 		switch (order) {
 		case PURE_RANDOM: shufflePureRandom(); break;
 		case BY_ID: sortById(); break;
-		case RANDOM_BY_QUALITY: shuffleByQualiy(); break;
+		case RANDOM_BY_QUALITY: shuffleByQuality(); break;
 		default: randomized = new LinkedList<Deck.Card>(base);break;
 		}
 		
@@ -46,7 +46,7 @@ public class Deck extends BaseAdapter {
 
 
 
-	private void shuffleByQualiy() {
+	private void shuffleByQuality() {
 		randomized = new LinkedList<Deck.Card>();
 		int maxQ=1;
 		for (Card card : base) {
@@ -72,8 +72,11 @@ public class Deck extends BaseAdapter {
 	}
 	
 	public Deck.Card getCard() {
+		if (randomized.size()==0) {
+			save();
+			shuffle(order);
+		}
 		Deck.Card dc = randomized.removeFirst();
-		randomized.addLast(dc);
 		return dc;
 	}
 	
@@ -178,5 +181,8 @@ public class Deck extends BaseAdapter {
 		
 		return view;
 	}
-
+	
+	public void save() {
+		CardsDatabase.save(base, context);
+	}
 }
