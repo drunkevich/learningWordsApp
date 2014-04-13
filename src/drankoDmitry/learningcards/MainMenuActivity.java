@@ -20,6 +20,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -162,6 +163,7 @@ public class MainMenuActivity extends Activity {
 		 switch (item.getItemId()) {
 	        case R.id.delete_db:
 	            CardsDatabase.deletedb(this);
+         	   Toast.makeText(MainMenuActivity.this, R.string.deleting_db, Toast.LENGTH_SHORT).show();
 	            return true;
 	        case R.id.load_test_file:
 	        	try {
@@ -203,6 +205,7 @@ public class MainMenuActivity extends Activity {
 	        	} catch (Exception e) {
 	        		e.printStackTrace();
 				}
+         	   Toast.makeText(MainMenuActivity.this, "importing file", Toast.LENGTH_SHORT).show();
 	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);

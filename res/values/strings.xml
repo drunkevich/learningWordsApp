@@ -57,5 +57,6 @@
     <string name="title_activity_import_export">ImportExportActivity</string>
     <string name="export_file">export_file</string>
     <string name="clear_qualities">clear_qualities</string>
-
+	<string name="deleting_db">deleting_db</string>
+	<string name="clearing_qualities">clearing_qualities</string>
 </resources>

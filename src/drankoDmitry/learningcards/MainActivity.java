@@ -297,18 +297,9 @@ public class MainActivity extends Activity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		return true;
 	    // Handle item selection
 		
-	    switch (item.getItemId()) {
-	        case R.id.editCards:
-	        	Intent intent1 = new Intent(MainActivity.this,MainMenuActivity.class);
-				intent1.putExtra("force alert", false);
-				startActivity(intent1);	            
-	            return true;
-	       
-	        default:
-	            return super.onOptionsItemSelected(item);
-	    }
 	}
 	
 }

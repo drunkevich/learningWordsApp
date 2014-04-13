@@ -208,4 +208,14 @@ public class CardsDatabase extends SQLiteOpenHelper {
 		
 	}
 
+	public static void clearQualities(Context ctx) {
+		CardsDatabase helper = new CardsDatabase(ctx);
+		SQLiteDatabase db = helper.getWritableDatabase();
+		ContentValues updatedValues = new ContentValues();
+		updatedValues.put(CardsDatabase.QUALITY, CardsDatabase.DEFAULT_QUALITY);
+		db.update(CardsDatabase.TABLE_NAME, updatedValues, null, null);
+		updatedValues.clear();
+		db.close();
+	}
+
 }

@@ -1,42 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/TableLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:paddingTop="4dp" >
 
-    <LinearLayout
+    <TableRow
+        android:id="@+id/tableRow1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+        
+        
+         <TextView
+        android:id="@+id/itemCardWord"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        >
-        
-         <TextView
-             android:id="@+id/itemCardWord"
-             android:layout_width="0dp"
-             android:layout_height="wrap_content"
-             android:layout_weight="1"
-             android:background="@color/bcgrd_word"
-             android:text="Large Text"
-             android:textAppearance="?android:attr/textAppearanceLarge" />
-
-         <TextView
-             android:id="@+id/itemCardQ"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_weight="0"
-             android:background="@color/bcgrd_translation"
-             android:text="5"
-             android:textAppearance="?android:attr/textAppearanceLarge" />
-        
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
         android:id="@+id/itemCardTranslate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/bcgrd_translation"
-        android:gravity="right"
+        android:layout_weight="1"
         android:text="Large Text"
         android:textAppearance="?android:attr/textAppearanceLarge" />
-    
-</LinearLayout>
+
+    <TextView
+        android:id="@+id/itemCardQ"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:text=" 5 "
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+        
+        
+        
+    </TableRow>
+
+   
+</TableLayout>
