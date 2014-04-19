@@ -15,7 +15,7 @@
         android:id="@+id/cb_import"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/gset_tag" />
+        android:text="@string/force_tag" />
 
     <EditText
         android:id="@+id/et_import"

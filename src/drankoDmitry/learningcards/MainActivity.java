@@ -8,9 +8,7 @@ import drankoDmitry.learningcards.R;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentValues;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -20,9 +18,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -57,7 +52,7 @@ public class MainActivity extends Activity {
 	private EditText d_quality;
 	private RadioGroup rg;
 	private CheckBox cb;
-	SharedPreferences settings;
+	private SharedPreferences settings;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -244,7 +239,7 @@ public class MainActivity extends Activity {
 	private void refreshTags() {
 		dbTags = CardsDatabase.readTags(this);	
 		ArrayAdapter<CharSequence> adapterT = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
-		adapterT.add("all cards");
+		adapterT.add(getResources().getText(R.string.all_tags));
 		for (String t:dbTags) {
 			Log.d(dbgTag, t);
 			adapterT.add(t);

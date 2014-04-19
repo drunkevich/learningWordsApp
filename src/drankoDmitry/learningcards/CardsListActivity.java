@@ -17,7 +17,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -115,7 +114,7 @@ public class CardsListActivity extends Activity {
 	private void refreshTags() {
 		dbTags = CardsDatabase.readTags(this);	
 		ArrayAdapter<CharSequence> adapterT = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
-		adapterT.add("all cards");
+		adapterT.add(getResources().getText(R.string.all_tags));
 		for (String t:dbTags) {
 			Log.d(dbgTag, t);
 			adapterT.add(t);

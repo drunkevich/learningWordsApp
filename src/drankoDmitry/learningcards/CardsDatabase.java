@@ -112,6 +112,7 @@ public class CardsDatabase extends SQLiteOpenHelper {
 		SQLiteDatabase db = helper.getWritableDatabase();
 
 		db.insert(CardsDatabase.TABLE_NAME, null, values);
+		
 		db.close();
 		values.clear();
 	}

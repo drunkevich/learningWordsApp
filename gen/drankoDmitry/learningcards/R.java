@@ -8,9 +8,6 @@
 package drankoDmitry.learningcards;
 
 public final class R {
-    public static final class array {
-        public static final int Qualities=0x7f080000;
-    }
     public static final class attr {
     }
     public static final class color {
@@ -31,48 +28,47 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int LinearLayout1=0x7f0b0000;
-        public static final int TableLayout1=0x7f0b001e;
-        public static final int action_settings=0x7f0b0028;
-        public static final int add_card=0x7f0b0005;
-        public static final int add_cards=0x7f0b0014;
-        public static final int button_correct=0x7f0b0011;
-        public static final int button_incorrect=0x7f0b0010;
-        public static final int cardView=0x7f0b000f;
-        public static final int cb_import=0x7f0b001c;
-        public static final int checkBox_invert=0x7f0b0027;
-        public static final int clear_qualities=0x7f0b000b;
-        public static final int delete_db=0x7f0b000c;
-        public static final int edit_cards=0x7f0b0015;
-        public static final int et_import=0x7f0b001d;
-        public static final int export_file=0x7f0b000a;
-        public static final int help=0x7f0b0017;
-        public static final int ie=0x7f0b0008;
-        public static final int imageButtonManageDeck=0x7f0b000e;
-        public static final int import_export=0x7f0b0016;
-        public static final int import_file=0x7f0b0009;
-        public static final int itemCardQ=0x7f0b0022;
-        public static final int itemCardTranslate=0x7f0b0021;
-        public static final int itemCardWord=0x7f0b0020;
-        public static final int learn_cards=0x7f0b0013;
-        public static final int listView=0x7f0b0007;
-        public static final int load_test_file=0x7f0b0029;
-        public static final int mm=0x7f0b0012;
-        public static final int quality=0x7f0b0004;
-        public static final int radio0=0x7f0b0024;
-        public static final int radio1=0x7f0b0025;
-        public static final int radio2=0x7f0b0026;
-        public static final int radioGroup1=0x7f0b0023;
-        public static final int spinnerSetListTag=0x7f0b0006;
-        public static final int spinnerSetTag=0x7f0b000d;
-        public static final int tableRow1=0x7f0b001f;
-        public static final int tag=0x7f0b0003;
-        public static final int textTranslation=0x7f0b001a;
-        public static final int textWord=0x7f0b0018;
-        public static final int textzero=0x7f0b0019;
-        public static final int translation=0x7f0b0002;
-        public static final int tv_import=0x7f0b001b;
-        public static final int word=0x7f0b0001;
+        public static final int LinearLayout1=0x7f0a0000;
+        public static final int TableLayout1=0x7f0a001e;
+        public static final int action_settings=0x7f0a0028;
+        public static final int add_card=0x7f0a0005;
+        public static final int add_cards=0x7f0a0014;
+        public static final int button_correct=0x7f0a0011;
+        public static final int button_incorrect=0x7f0a0010;
+        public static final int cardView=0x7f0a000f;
+        public static final int cb_import=0x7f0a001c;
+        public static final int checkBox_invert=0x7f0a0027;
+        public static final int clear_qualities=0x7f0a000b;
+        public static final int delete_db=0x7f0a000c;
+        public static final int edit_cards=0x7f0a0015;
+        public static final int et_import=0x7f0a001d;
+        public static final int export_file=0x7f0a000a;
+        public static final int help=0x7f0a0017;
+        public static final int ie=0x7f0a0008;
+        public static final int imageButtonManageDeck=0x7f0a000e;
+        public static final int import_export=0x7f0a0016;
+        public static final int import_file=0x7f0a0009;
+        public static final int itemCardQ=0x7f0a0022;
+        public static final int itemCardTranslate=0x7f0a0021;
+        public static final int itemCardWord=0x7f0a0020;
+        public static final int learn_cards=0x7f0a0013;
+        public static final int listView=0x7f0a0007;
+        public static final int mm=0x7f0a0012;
+        public static final int quality=0x7f0a0004;
+        public static final int radio0=0x7f0a0024;
+        public static final int radio1=0x7f0a0025;
+        public static final int radio2=0x7f0a0026;
+        public static final int radioGroup1=0x7f0a0023;
+        public static final int spinnerSetListTag=0x7f0a0006;
+        public static final int spinnerSetTag=0x7f0a000d;
+        public static final int tableRow1=0x7f0a001f;
+        public static final int tag=0x7f0a0003;
+        public static final int textTranslation=0x7f0a001a;
+        public static final int textWord=0x7f0a0018;
+        public static final int textzero=0x7f0a0019;
+        public static final int translation=0x7f0a0002;
+        public static final int tv_import=0x7f0a001b;
+        public static final int word=0x7f0a0001;
     }
     public static final class layout {
         public static final int activity_adding_card_manually=0x7f030000;
@@ -87,65 +83,58 @@ public final class R {
         public static final int manage_dialog=0x7f030009;
     }
     public static final class menu {
-        public static final int adding_card_manually=0x7f0a0000;
-        public static final int cards_list=0x7f0a0001;
-        public static final int import_export=0x7f0a0002;
-        public static final int main=0x7f0a0003;
-        public static final int main_menu=0x7f0a0004;
+        public static final int adding_card_manually=0x7f090000;
+        public static final int cards_list=0x7f090001;
+        public static final int import_export=0x7f090002;
+        public static final int main=0x7f090003;
+        public static final int main_menu=0x7f090004;
     }
     public static final class raw {
         public static final int test=0x7f040000;
     }
     public static final class string {
         public static final int action_settings=0x7f070002;
-        public static final int addCard=0x7f070008;
-        public static final int add_card=0x7f07000e;
-        public static final int add_cards=0x7f070021;
+        public static final int add_card=0x7f07000b;
+        public static final int add_cards=0x7f07001c;
+        public static final int all_tags=0x7f070029;
         public static final int app_activity=0x7f070001;
         public static final int app_name=0x7f070000;
-        public static final int cancel=0x7f07001b;
-        public static final int card_edition=0x7f070017;
-        public static final int changeQuality=0x7f070023;
-        public static final int clear_qualities=0x7f07002e;
-        public static final int clearing_qualities=0x7f070030;
-        public static final int delete_database=0x7f07000f;
-        public static final int deleting_db=0x7f07002f;
-        public static final int dialog_empty_deck=0x7f07001e;
-        public static final int dialog_empty_deck_title=0x7f07001f;
-        public static final int dialog_no_cards=0x7f07001c;
-        public static final int dialog_no_cards_title=0x7f07001d;
-        public static final int editCardDB=0x7f070006;
-        public static final int editCards=0x7f070025;
-        public static final int export_file=0x7f07002d;
-        public static final int force_tag=0x7f070014;
-        public static final int forcedQuality=0x7f070015;
-        public static final int gset_tag=0x7f070028;
-        public static final int hello_world=0x7f070003;
-        public static final int help=0x7f070027;
-        public static final int importExport=0x7f070026;
-        public static final int import_file=0x7f070016;
-        public static final int invert_cards=0x7f070029;
-        public static final int learn=0x7f070024;
-        public static final int load_test_file=0x7f07002a;
-        public static final int nextCard=0x7f070004;
-        public static final int ok=0x7f07001a;
-        public static final int path=0x7f070013;
-        public static final int quality_optional=0x7f07000d;
-        public static final int read_from_file=0x7f070010;
-        public static final int save_db=0x7f070011;
-        public static final int selectCards=0x7f070018;
-        public static final int selectDeck=0x7f070022;
-        public static final int select_deck=0x7f070020;
-        public static final int tag_optional=0x7f07000c;
-        public static final int title_activity_adding_card_manually=0x7f070009;
-        public static final int title_activity_card_edit=0x7f070007;
-        public static final int title_activity_cards_list=0x7f07002b;
-        public static final int title_activity_deck_chooser=0x7f070019;
-        public static final int title_activity_import_export=0x7f07002c;
-        public static final int title_activity_read_file=0x7f070012;
-        public static final int translation=0x7f07000b;
-        public static final int viewAnswer=0x7f070005;
-        public static final int word=0x7f07000a;
+        public static final int cancel=0x7f070018;
+        public static final int card_edition=0x7f070014;
+        public static final int changeQuality=0x7f07001d;
+        public static final int clear_qualities=0x7f070026;
+        public static final int clearing_qualities=0x7f070028;
+        public static final int delete_database=0x7f07000c;
+        public static final int deleting_db=0x7f070027;
+        public static final int dialog_empty_deck_title=0x7f07001a;
+        public static final int dialog_no_cards_title=0x7f070019;
+        public static final int editCardDB=0x7f070004;
+        public static final int editCards=0x7f07001f;
+        public static final int export_file=0x7f070025;
+        public static final int force_tag=0x7f070011;
+        public static final int forcedQuality=0x7f070012;
+        public static final int help=0x7f070021;
+        public static final int importExport=0x7f070020;
+        public static final int import_file=0x7f070013;
+        public static final int invert_cards=0x7f070022;
+        public static final int learn=0x7f07001e;
+        public static final int ok=0x7f070017;
+        public static final int path=0x7f070010;
+        public static final int quality_optional=0x7f07000a;
+        public static final int read_from_file=0x7f07000d;
+        public static final int save_db=0x7f07000e;
+        public static final int selectCards=0x7f070015;
+        public static final int select_deck=0x7f07001b;
+        public static final int tag_optional=0x7f070009;
+        public static final int title_activity_adding_card_manually=0x7f070006;
+        public static final int title_activity_card_edit=0x7f070005;
+        public static final int title_activity_cards_list=0x7f070023;
+        public static final int title_activity_deck_chooser=0x7f070016;
+        public static final int title_activity_import_export=0x7f070024;
+        public static final int title_activity_read_file=0x7f07000f;
+        public static final int translation=0x7f070008;
+        public static final int viewAnswer=0x7f070003;
+        public static final int word=0x7f070007;
     }
     public static final class style {
         /** 
@@ -169,10 +158,10 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f090000;
+        public static final int AppBaseTheme=0x7f080000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f090001;
+        public static final int AppTheme=0x7f080001;
     }
 }

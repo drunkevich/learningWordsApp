@@ -27,12 +27,8 @@ public class ImportExportActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-						Log.d("onClick", "import");
-						Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-					    intent.setType("*/*");
-					    if (intent.resolveActivity(getPackageManager()) != null) {
-					        startActivityForResult(intent, REQUEST_FILE_GET);
-					    }
+						
+				//TODO
 
 				}
 			});

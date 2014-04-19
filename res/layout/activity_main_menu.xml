@@ -28,7 +28,7 @@
             android:id="@+id/add_cards"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/addCard" />
+            android:text="@string/add_card" />
 
         <Button
             android:id="@+id/edit_cards"

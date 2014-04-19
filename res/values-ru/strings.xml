@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Учебные Карточки</string>
+    <string name="app_activity">Учебные Карточки</string>
+    <string name="action_settings">Настройки</string>
+    <string name="viewAnswer">Показать ответ</string>
+    <string name="editCardDB">Редактировать базу данных</string>
+    <string name="title_activity_card_edit">Редактирование Карточек</string>
+    <string name="title_activity_adding_card_manually">Ручное Добавление Карточек</string>
+    <string name="word">слово</string>
+    <string name="translation">перевод</string>
+    <string name="tag_optional">метка (опционально)</string>
+    <string name="quality_optional">оценка (опционально)</string>
+    <string name="add_card">Добавить карточку</string>
+    <string name="delete_database">Удалить базу данных</string>
+    <string name="read_from_file">Прочесть из файла</string>
+    <string name="save_db">Сохранить базу данных в файл</string>
+    <string name="title_activity_read_file">Чтение Файла</string>
+    <string name="path">путь к файлу</string>
+    <string name="force_tag">установить метку всем (опционально)</string>
+    <string name="forcedQuality">установить оценку всем (опционально)</string>
+    <string name="import_file">Импорт</string>
+    <string name="card_edition">Редактирование карточки</string>
+    <string name="selectCards">Выберите карточки</string>
+    <string name="title_activity_deck_chooser">Выбор колоды</string>
+    <string name="ok">Принять</string>
+    <string name="cancel">Отмена</string>
+     <string name="dialog_no_cards_title">База данных пуста</string>
+     <string name="dialog_empty_deck_title">В колоде нет карт</string>
+    <string name="select_deck">Выберите колоду</string>
+    <string name="add_cards">Добавить карты</string>
+    <string name="changeQuality">Изменить оценку?</string>
+    <string name="learn">Учить слова</string>
+    <string name="editCards">Редактировать карточки</string>
+    <string name="importExport">Импорт/Экспорт</string>
+    <string name="help">Помощь</string>
+    <string name="invert_cards">Инвертировать карточки</string>
+    <string name="title_activity_cards_list">Список Карт</string>
+    <string name="title_activity_import_export">Импорт/Экспорт</string>
+    <string name="export_file">Экспорт файла</string>
+    <string name="clear_qualities">Стереть оценки</string>
+	<string name="deleting_db">Удаление базы данных</string>
+	<string name="clearing_qualities">Оценки стираются</string>
+	<string name="all_tags">Все метки</string>
+</resources>
