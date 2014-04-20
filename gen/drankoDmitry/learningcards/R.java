@@ -74,25 +74,30 @@ public final class R {
         public static final int activity_adding_card_manually=0x7f030000;
         public static final int activity_cards_list=0x7f030001;
         public static final int activity_import_export=0x7f030002;
-        public static final int activity_main=0x7f030003;
-        public static final int activity_main_menu=0x7f030004;
-        public static final int edit_card_dialog=0x7f030005;
-        public static final int first=0x7f030006;
-        public static final int import_file_layout=0x7f030007;
-        public static final int item_card=0x7f030008;
-        public static final int manage_dialog=0x7f030009;
+        public static final int activity_import_file=0x7f030003;
+        public static final int activity_main=0x7f030004;
+        public static final int activity_main_menu=0x7f030005;
+        public static final int edit_card_dialog=0x7f030006;
+        public static final int first=0x7f030007;
+        public static final int import_file_layout=0x7f030008;
+        public static final int item_card=0x7f030009;
+        public static final int manage_dialog=0x7f03000a;
     }
     public static final class menu {
         public static final int adding_card_manually=0x7f090000;
         public static final int cards_list=0x7f090001;
         public static final int import_export=0x7f090002;
-        public static final int main=0x7f090003;
-        public static final int main_menu=0x7f090004;
+        public static final int import_file=0x7f090003;
+        public static final int main=0x7f090004;
+        public static final int main_menu=0x7f090005;
     }
     public static final class raw {
         public static final int test=0x7f040000;
     }
     public static final class string {
+        public static final int PURE_RANDOM=0x7f07002d;
+        public static final int RANDOM_BY_QUALITY=0x7f07002c;
+        public static final int SORT_BY_ID=0x7f07002e;
         public static final int action_settings=0x7f070002;
         public static final int add_card=0x7f07000b;
         public static final int add_cards=0x7f07001c;
@@ -100,10 +105,12 @@ public final class R {
         public static final int app_activity=0x7f070001;
         public static final int app_name=0x7f070000;
         public static final int cancel=0x7f070018;
+        public static final int cant_read_external_storage=0x7f070030;
         public static final int card_edition=0x7f070014;
         public static final int changeQuality=0x7f07001d;
         public static final int clear_qualities=0x7f070026;
         public static final int clearing_qualities=0x7f070028;
+        public static final int correct=0x7f07002a;
         public static final int delete_database=0x7f07000c;
         public static final int deleting_db=0x7f070027;
         public static final int dialog_empty_deck_title=0x7f07001a;
@@ -116,6 +123,7 @@ public final class R {
         public static final int help=0x7f070021;
         public static final int importExport=0x7f070020;
         public static final int import_file=0x7f070013;
+        public static final int incorrect=0x7f07002b;
         public static final int invert_cards=0x7f070022;
         public static final int learn=0x7f07001e;
         public static final int ok=0x7f070017;
@@ -131,6 +139,9 @@ public final class R {
         public static final int title_activity_cards_list=0x7f070023;
         public static final int title_activity_deck_chooser=0x7f070016;
         public static final int title_activity_import_export=0x7f070024;
+        /**  localization needed 
+         */
+        public static final int title_activity_import_file=0x7f07002f;
         public static final int title_activity_read_file=0x7f07000f;
         public static final int translation=0x7f070008;
         public static final int viewAnswer=0x7f070003;

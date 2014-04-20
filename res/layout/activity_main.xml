@@ -46,18 +46,18 @@
         android:layout_weight="1">
         
 	    <Button
-	    android:id="@+id/button_incorrect"
-	    android:layout_width="0dp"
-	    android:layout_height="match_parent"
-	    android:layout_weight="1"
-	    android:text="incorrect" />
+	        android:id="@+id/button_incorrect"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="1"
+	        android:text="@string/incorrect" />
 
 	<Button
 	    android:id="@+id/button_correct"
 	    android:layout_width="0dp"
 	    android:layout_height="match_parent"
 	    android:layout_weight="1"
-	    android:text="correct" />
+	    android:text="@string/correct" />
 	    
         </LinearLayout>
 

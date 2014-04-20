@@ -26,8 +26,8 @@
     <string name="title_activity_deck_chooser">Deck Chooser</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
-     <string name="dialog_no_cards_title">Empty Database</string>
-     <string name="dialog_empty_deck_title">Current deck is empty</string>
+    <string name="dialog_no_cards_title">Empty Database</string>
+    <string name="dialog_empty_deck_title">Current deck is empty</string>
     <string name="select_deck">Select deck</string>
     <string name="add_cards">Add cards</string>
     <string name="changeQuality">Change quality?</string>
@@ -40,7 +40,19 @@
     <string name="title_activity_import_export">Import Export Activity</string>
     <string name="export_file">Export file</string>
     <string name="clear_qualities">Clear qualities</string>
-	<string name="deleting_db">Deleting database</string>
-	<string name="clearing_qualities">Clearing qualities</string>
-	<string name="all_tags">All tags</string>
+    <string name="deleting_db">Deleting database</string>
+    <string name="clearing_qualities">Clearing qualities</string>
+    <string name="all_tags">All tags</string>
+    <string name="correct">Correct</string>
+    <string name="incorrect">Incorrect</string>
+    <string name="RANDOM_BY_QUALITY">Random by quality</string>
+    <string name="PURE_RANDOM">Pure random</string>
+    <string name="SORT_BY_ID">Sorted</string>
+    
+    <!-- localization needed -->
+    
+    <string name="title_activity_import_file">Import File Activity</string>
+    <string name="cant_read_external_storage">Can\'t_read_external_storage</string>
+    
+
 </resources>

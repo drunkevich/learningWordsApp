@@ -43,4 +43,7 @@
 	<string name="deleting_db">Удаление базы данных</string>
 	<string name="clearing_qualities">Оценки стираются</string>
 	<string name="all_tags">Все метки</string>
+	<string name="RANDOM_BY_QUALITY">Случайно с учетом оценки</string>
+	<string name="PURE_RANDOM">Полностью случайно</string>
+	<string name="SORT_BY_ID">По порядку</string>
 </resources>

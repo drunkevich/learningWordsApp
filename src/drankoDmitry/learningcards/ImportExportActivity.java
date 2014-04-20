@@ -27,9 +27,7 @@ public class ImportExportActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-						
-				//TODO
-
+				startActivity(new Intent(ImportExportActivity.this,ImportFileActivity.class));
 				}
 			});
 		

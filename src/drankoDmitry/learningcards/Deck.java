@@ -2,6 +2,8 @@ package drankoDmitry.learningcards;
 
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.Random;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ public class Deck extends BaseAdapter {
 	private OrderType order = OrderType.PURE_RANDOM;
 	private String deckTag;
 	private LayoutInflater inflater;
+	private Random random = new Random();
 	
 	public Deck(String tag, OrderType _order, Context ctx) {
 		context = ctx;
@@ -45,13 +48,26 @@ public class Deck extends BaseAdapter {
 
 	private void shuffleByQuality() {
 		randomized = new LinkedList<Deck.Card>();
-		int maxQ=1;
+		Card c = base.getFirst();
+		int maxQ = c.quality;
+		int minQ = c.quality;
 		for (Card card : base) {
 			if (card.quality>maxQ)
 				maxQ=card.quality;
+			if (card.quality<minQ)
+				minQ=card.quality;
 		}
-		for (Card card : base) {
-			randomized.addAll(Collections.nCopies(card.getFrequency(maxQ), card));
+		if (maxQ==minQ) {
+			randomized = new LinkedList<Deck.Card>(base);
+		} else {
+			int gape = maxQ-minQ;
+			while (randomized.size()==0) {
+				for (Card card : base) {
+					if ((card.quality-random.nextInt(gape+1))<=minQ) {
+						randomized.addLast(card);
+					}
+				}
+			}
 		}
 		Collections.shuffle(randomized);
 	}
@@ -131,9 +147,7 @@ public class Deck extends BaseAdapter {
 			quality=_quality;
 		}
 
-		public int getFrequency(int maxQ) {
-			return (maxQ-this.quality+1);
-		}
+		
 
 		@Override
 		public int compareTo(Card another) {
@@ -163,7 +177,6 @@ public class Deck extends BaseAdapter {
 
 	@Override
 	public long getItemId(int position) {
-		// TODO ??
 		return position;
 	}
 
