@@ -123,7 +123,7 @@ public class MainMenuActivity extends Activity {
 	    LayoutInflater inflater = this.getLayoutInflater();
 	    View view = inflater.inflate(R.layout.import_file_layout, null);
 	    tv = (TextView) view.findViewById(R.id.tv_import);
-	    tv.setText("import file "+filename_txt+" ?");
+	    tv.setText(getResources().getString(R.string.verify_import_file)+filename_txt+"?");
 	    et = (EditText) view.findViewById(R.id.et_import);
 	    et.setText(filename);
 	    cb = (CheckBox) view.findViewById(R.id.cb_import);
@@ -140,10 +140,11 @@ public class MainMenuActivity extends Activity {
 	               public void onClick(DialogInterface dialog, int id) {
 	            	   Log.d("dialog","ok");
 	            	   if (cb.isChecked()) {
-	            		   CardsDatabase.readFile(u, MainMenuActivity.this, et.getText().toString());
+	            		   CardsDatabase.readFile(u.getEncodedPath(), MainMenuActivity.this, et.getText().toString());
 	            	   } else {
-	            		   CardsDatabase.readFile(u, MainMenuActivity.this, null);
+	            		   CardsDatabase.readFile(u.getEncodedPath(), MainMenuActivity.this, null);
 	  	            	}
+	            	   Toast.makeText(MainMenuActivity.this, R.string.import_file, Toast.LENGTH_SHORT).show();
 	               }
 	           });
 	    builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

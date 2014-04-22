@@ -104,7 +104,7 @@ public final class R {
         public static final int app_activity=0x7f070001;
         public static final int app_name=0x7f070000;
         public static final int cancel=0x7f070018;
-        public static final int cant_read_external_storage=0x7f070030;
+        public static final int cant_read_external_storage=0x7f070031;
         public static final int card_edition=0x7f070014;
         public static final int changeQuality=0x7f07001d;
         public static final int clear_qualities=0x7f070026;
@@ -138,11 +138,10 @@ public final class R {
         public static final int title_activity_cards_list=0x7f070023;
         public static final int title_activity_deck_chooser=0x7f070016;
         public static final int title_activity_import_export=0x7f070024;
-        /**  localization needed 
-         */
-        public static final int title_activity_import_file=0x7f07002f;
+        public static final int title_activity_import_file=0x7f070030;
         public static final int title_activity_read_file=0x7f07000f;
         public static final int translation=0x7f070008;
+        public static final int verify_import_file=0x7f07002f;
         public static final int viewAnswer=0x7f070003;
         public static final int word=0x7f070007;
     }

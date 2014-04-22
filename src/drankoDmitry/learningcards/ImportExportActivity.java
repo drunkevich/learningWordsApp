@@ -103,10 +103,5 @@ public class ImportExportActivity extends Activity {
 		getMenuInflater().inflate(R.menu.import_export, menu);
 		return true;
 	}
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-	    if (requestCode == REQUEST_FILE_GET && resultCode == RESULT_OK) {
-	    	Log.d("getFile", data.toString());
-	    }
-	}
+	
 }

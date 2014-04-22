@@ -48,9 +48,7 @@
     <string name="RANDOM_BY_QUALITY">Random by quality</string>
     <string name="PURE_RANDOM">Pure random</string>
     <string name="SORT_BY_ID">Sorted</string>
-    
-    <!-- localization needed -->
-    
+    <string name="verify_import_file">Import file </string>
     <string name="title_activity_import_file">Import File Activity</string>
     <string name="cant_read_external_storage">Can\'t_read_external_storage</string>
     

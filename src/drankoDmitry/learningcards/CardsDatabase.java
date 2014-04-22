@@ -142,11 +142,11 @@ public class CardsDatabase extends SQLiteOpenHelper {
 		updatedValues.clear();
 	}
 	
-	public static void readFile(Uri uri, Context ctx, String tag) {
+	public static void readFile(String path, Context ctx, String tag) {
 		CardsDatabase helper = new CardsDatabase(ctx);
 		SQLiteDatabase db = helper.getWritableDatabase();
 		try {
-	        BufferedReader br = new BufferedReader(new FileReader(uri.getEncodedPath()));
+	        BufferedReader br = new BufferedReader(new FileReader(path));
 	        String str = "";
 	        while ((str = br.readLine()) != null) {
 	          

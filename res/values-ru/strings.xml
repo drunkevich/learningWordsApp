@@ -48,4 +48,7 @@
 	<string name="RANDOM_BY_QUALITY">Случайно с учетом оценки</string>
 	<string name="PURE_RANDOM">Полностью случайно</string>
 	<string name="SORT_BY_ID">По порядку</string>
+	<string name="verify_import_file">Импортировать файл </string>
+	<string name="title_activity_import_file">Импорт файлов</string>
+    <string name="cant_read_external_storage">Невожможно прочесть SD-карту</string>
 </resources>
