@@ -7,14 +7,20 @@ import java.util.ArrayList;
 import android.os.Bundle;
 import android.os.Environment;
 import android.app.Activity;
+import android.app.ListActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
-public class ImportFileActivity extends Activity {
+public class ImportFileActivity extends ListActivity {
 	
 	private File path;
-	private ArrayList<File> dicts = new ArrayList<File>();
+	private ArrayList<FileItem> dicts = new ArrayList<FileItem>();
 	private FilenameFilter dirFilter = new FilenameFilter() {
 		@Override
 		public boolean accept(File dir, String filename) {
@@ -26,7 +32,7 @@ public class ImportFileActivity extends Activity {
 		@Override
 		public boolean accept(File dir, String filename) {
 			File sel = new File(dir, filename);
-			return (sel.isFile()&&filename.endsWith(".lcd"));
+			return (sel.isFile()&&filename.endsWith(".txt"));
 		}
 	};
 			
@@ -34,7 +40,7 @@ public class ImportFileActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_import_file);
+		
 		if (!isExternalStorageReadable()) {
 			 Toast.makeText(ImportFileActivity.this, R.string.cant_read_external_storage, Toast.LENGTH_SHORT).show();
 			 finish();
@@ -43,6 +49,9 @@ public class ImportFileActivity extends Activity {
 		fileSearch(path);
 		Log.d("dicts found", dicts.size()+"");
 		//TODO
+		ListAdapter adapter = new ArrayAdapter<FileItem>(this, android.R.layout.simple_list_item_1, dicts);
+		setListAdapter(adapter);
+
 	}
 
 	@Override
@@ -62,14 +71,40 @@ public class ImportFileActivity extends Activity {
 	}
 	
 	private void fileSearch(File root) {
+		Log.d("fileSearch", dicts.size()+"");
 		File[] fList = root.listFiles(dictFilter);
-		for (File f: fList) {
-			dicts.add(f);
+		if (fList!=null) {
+			for (File f: fList) {
+				dicts.add(new FileItem(f));
+			}
 		}
+	
 		File[] dList = root.listFiles(dirFilter);
-		for (File d: dList) {
-			fileSearch(d);
+		if (dList!=null) {
+			for (File d: dList) {
+				fileSearch(d);
+			}
 		}
+	}
+	
+	@Override
+	  protected void onListItemClick(ListView l, View v, int position, long id) {
+	    FileItem item = dicts.get(position);
+	    Toast.makeText(this, item + " selected", Toast.LENGTH_LONG).show();
+	  }
+	
+	private class FileItem {
+		private File file;
+		
+		public FileItem(File _file) {
+			file = _file;
+		}
+		
+		@Override
+		public String toString() {
+			return file.getName();
+		}
+		
 	}
 }
 	

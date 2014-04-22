@@ -74,14 +74,13 @@ public final class R {
         public static final int activity_adding_card_manually=0x7f030000;
         public static final int activity_cards_list=0x7f030001;
         public static final int activity_import_export=0x7f030002;
-        public static final int activity_import_file=0x7f030003;
-        public static final int activity_main=0x7f030004;
-        public static final int activity_main_menu=0x7f030005;
-        public static final int edit_card_dialog=0x7f030006;
-        public static final int first=0x7f030007;
-        public static final int import_file_layout=0x7f030008;
-        public static final int item_card=0x7f030009;
-        public static final int manage_dialog=0x7f03000a;
+        public static final int activity_main=0x7f030003;
+        public static final int activity_main_menu=0x7f030004;
+        public static final int edit_card_dialog=0x7f030005;
+        public static final int first=0x7f030006;
+        public static final int import_file_layout=0x7f030007;
+        public static final int item_card=0x7f030008;
+        public static final int manage_dialog=0x7f030009;
     }
     public static final class menu {
         public static final int adding_card_manually=0x7f090000;
