@@ -41,6 +41,7 @@
     <string name="export_file">Export file</string>
     <string name="clear_qualities">Clear qualities</string>
     <string name="deleting_db">Deleting database</string>
+    <string name="saving_db">SAving database</string>
     <string name="clearing_qualities">Clearing qualities</string>
     <string name="all_tags">All tags</string>
     <string name="correct">Correct</string>

@@ -94,22 +94,22 @@ public final class R {
         public static final int test=0x7f040000;
     }
     public static final class string {
-        public static final int PURE_RANDOM=0x7f07002d;
-        public static final int RANDOM_BY_QUALITY=0x7f07002c;
-        public static final int SORT_BY_ID=0x7f07002e;
+        public static final int PURE_RANDOM=0x7f07002e;
+        public static final int RANDOM_BY_QUALITY=0x7f07002d;
+        public static final int SORT_BY_ID=0x7f07002f;
         public static final int action_settings=0x7f070002;
         public static final int add_card=0x7f07000b;
         public static final int add_cards=0x7f07001c;
-        public static final int all_tags=0x7f070029;
+        public static final int all_tags=0x7f07002a;
         public static final int app_activity=0x7f070001;
         public static final int app_name=0x7f070000;
         public static final int cancel=0x7f070018;
-        public static final int cant_read_external_storage=0x7f070031;
+        public static final int cant_read_external_storage=0x7f070032;
         public static final int card_edition=0x7f070014;
         public static final int changeQuality=0x7f07001d;
         public static final int clear_qualities=0x7f070026;
-        public static final int clearing_qualities=0x7f070028;
-        public static final int correct=0x7f07002a;
+        public static final int clearing_qualities=0x7f070029;
+        public static final int correct=0x7f07002b;
         public static final int delete_database=0x7f07000c;
         public static final int deleting_db=0x7f070027;
         public static final int dialog_empty_deck_title=0x7f07001a;
@@ -122,7 +122,7 @@ public final class R {
         public static final int help=0x7f070021;
         public static final int importExport=0x7f070020;
         public static final int import_file=0x7f070013;
-        public static final int incorrect=0x7f07002b;
+        public static final int incorrect=0x7f07002c;
         public static final int invert_cards=0x7f070022;
         public static final int learn=0x7f07001e;
         public static final int ok=0x7f070017;
@@ -130,6 +130,7 @@ public final class R {
         public static final int quality_optional=0x7f07000a;
         public static final int read_from_file=0x7f07000d;
         public static final int save_db=0x7f07000e;
+        public static final int saving_db=0x7f070028;
         public static final int selectCards=0x7f070015;
         public static final int select_deck=0x7f07001b;
         public static final int tag_optional=0x7f070009;
@@ -138,10 +139,10 @@ public final class R {
         public static final int title_activity_cards_list=0x7f070023;
         public static final int title_activity_deck_chooser=0x7f070016;
         public static final int title_activity_import_export=0x7f070024;
-        public static final int title_activity_import_file=0x7f070030;
+        public static final int title_activity_import_file=0x7f070031;
         public static final int title_activity_read_file=0x7f07000f;
         public static final int translation=0x7f070008;
-        public static final int verify_import_file=0x7f07002f;
+        public static final int verify_import_file=0x7f070030;
         public static final int viewAnswer=0x7f070003;
         public static final int word=0x7f070007;
     }

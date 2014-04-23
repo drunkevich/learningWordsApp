@@ -1,18 +1,21 @@
 package drankoDmitry.learningcards;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 import drankoDmitry.learningcards.Deck.Card;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
 
 public class CardsDatabase extends SQLiteOpenHelper {
@@ -217,6 +220,27 @@ public class CardsDatabase extends SQLiteOpenHelper {
 		db.update(CardsDatabase.TABLE_NAME, updatedValues, null, null);
 		updatedValues.clear();
 		db.close();
+	}
+
+	public static void savedb(Context context) {
+		File out = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"learning_cards_backup.txt");
+		try {
+			FileOutputStream stream = new FileOutputStream(out);
+		    
+		    CardsDatabase helper = new CardsDatabase(context);
+			SQLiteDatabase db = helper.getReadableDatabase();
+		    Cursor c = db.rawQuery("SELECT * from "+CardsDatabase.TABLE_NAME, null);
+		    c.moveToFirst();
+		    stream.write((c.getInt(0)+";"+c.getString(1)+";"+c.getString(2)+";"+c.getString(3)+";"+c.getInt(4)+"\n").getBytes());
+		    while (c.moveToNext()) {
+		    	 stream.write((c.getInt(0)+";"+c.getString(1)+";"+c.getString(2)+";"+c.getString(3)+";"+c.getInt(4)+"\n").getBytes());
+		    }
+		    c.close();
+			db.close();
+		    stream.close();
+		} catch (Exception e) {
+			Log.e("Exception", "File write failed: " + e.toString());
+		}
 	}
 
 }

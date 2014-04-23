@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import drankoDmitry.learningcards.R;
-
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
@@ -87,6 +86,14 @@ public class MainMenuActivity extends Activity {
 							
 				}
 			});
+		Button help = (Button) findViewById(R.id.help);
+		help.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(MainMenuActivity.this, "Help, I need somebody\nHelp, not just anybody\nHelp, you know I need someone, help", Toast.LENGTH_SHORT).show();
+			}
+		});
+		   
 		
 		 final Intent intent = getIntent();  
 	        final String action = intent.getAction();

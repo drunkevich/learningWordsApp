@@ -41,6 +41,7 @@
     <string name="export_file">Экспорт файла</string>
     <string name="clear_qualities">Стереть оценки</string>
 	<string name="deleting_db">Удаление базы данных</string>
+	<string name="saving_db">Запись базы данных</string>
 	<string name="clearing_qualities">Оценки стираются</string>
 	<string name="all_tags">Все метки</string>
     <string name="correct">Правильно</string>

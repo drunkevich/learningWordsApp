@@ -38,8 +38,8 @@ public class ImportExportActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 						Log.d("onClick", "export");
-						
-						//TODO
+						CardsDatabase.savedb(ImportExportActivity.this);
+						 Toast.makeText(ImportExportActivity.this, R.string.saving_db, Toast.LENGTH_SHORT).show();
 				}
 			});
 		
