@@ -2,8 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mm"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/bcgrd_word" >
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:id="@+id/LinearLayout1"

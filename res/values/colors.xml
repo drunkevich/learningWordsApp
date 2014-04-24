@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="bcgrd_translation">#4169e1</color>
-    <color name="bcgrd_word">#0047ab</color>
+    <color name="bcgrd_translation_">#4169e1</color>
+    <color name="bcgrd_word_">#0047ab</color>
     
 </resources>
