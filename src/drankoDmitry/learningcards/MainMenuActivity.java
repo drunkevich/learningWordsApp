@@ -1,15 +1,14 @@
 package drankoDmitry.learningcards;
 
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
-import drankoDmitry.learningcards.R;
-import android.net.Uri;
-import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,14 +18,14 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.content.ContentValues;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.widget.Toast;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class MainMenuActivity extends Activity {
 	
@@ -34,7 +33,6 @@ public class MainMenuActivity extends Activity {
 	private TextView tv;
 	private CheckBox cb;
 	private SharedPreferences settings;
-	protected static final int GET_TEXT_FILE = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +40,9 @@ public class MainMenuActivity extends Activity {
         
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_menu);
-		
-		Button learnCard = (Button) findViewById(R.id.learn_cards);
+
+
+        Button learnCard = (Button) findViewById(R.id.learn_cards);
 		
 		learnCard.setOnClickListener(new OnClickListener() {
 			
@@ -99,7 +98,6 @@ public class MainMenuActivity extends Activity {
 	        final String action = intent.getAction();
 
 	        if(Intent.ACTION_VIEW.equals(action)){
-	            //uri = intent.getStringExtra("URI");
 	            Uri uri = intent.getData();
 	            Log.d("catching file", uri.toString());
 	            importFile(uri);
@@ -147,10 +145,10 @@ public class MainMenuActivity extends Activity {
 	               public void onClick(DialogInterface dialog, int id) {
 	            	   Log.d("dialog","ok");
 	            	   if (cb.isChecked()) {
-	            		   CardsDatabase.readFile(u.getEncodedPath(), MainMenuActivity.this, et.getText().toString());
-	            	   } else {
-	            		   CardsDatabase.readFile(u.getEncodedPath(), MainMenuActivity.this, null);
-	  	            	}
+                           CardsDatabase.readFile(u.getEncodedPath(), MainMenuActivity.this, et.getText().toString(), null, null);
+                       } else {
+                           CardsDatabase.readFile(u.getEncodedPath(), MainMenuActivity.this, null, null, null);
+                       }
 	            	   Toast.makeText(MainMenuActivity.this, R.string.import_file, Toast.LENGTH_SHORT).show();
 	               }
 	           });
@@ -187,15 +185,15 @@ public class MainMenuActivity extends Activity {
     		InputStream inputStream = this.getResources().openRawResource(R.raw.test);
     		InputStreamReader inputreader = new InputStreamReader(inputStream);
     		BufferedReader br = new BufferedReader(inputreader);
-    		String str = "";
-    		while ((str = br.readLine()) != null) {
+            String str;
+            while ((str = br.readLine()) != null) {
     			Log.d("import", str);
     			String[] s =str.split(";");
-    			for (String string:s) {
-    				string=string.trim();
-    			}
     			int l = s.length;
-    			if ((l>1)&&(s[0].length()>0)&&(s[1].length()>0)){
+                for (int i = 0; i < l; i++) {
+                    s[0] = s[0].trim();
+                }
+                if ((l>1)&&(s[0].length()>0)&&(s[1].length()>0)){
     				ContentValues values = new ContentValues();
     				values.put(CardsDatabase.WORD, s[0]);
     				values.put(CardsDatabase.TRANSLATION, s[1]);
@@ -210,12 +208,12 @@ public class MainMenuActivity extends Activity {
     						int q = Integer.parseInt(s[3]);
     						values.put(CardsDatabase.QUALITY, q);
     					} catch (Exception e) {
-    						values.put(CardsDatabase.QUALITY, CardsDatabase.DEFAULT_QUALITY);
-    					}
-    				else 
-    					values.put(CardsDatabase.QUALITY, CardsDatabase.DEFAULT_QUALITY);
-    				
-    				CardsDatabase.insertCard(values,this);
+                            values.put(CardsDatabase.QUALITY, Card.defaultQ);
+                        }
+    				else
+                        values.put(CardsDatabase.QUALITY, Card.defaultQ);
+
+                    CardsDatabase.insertCard(values,this);
     			}
     		}
     		br.close();

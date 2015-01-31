@@ -52,6 +52,8 @@
     <string name="verify_import_file">Import file </string>
     <string name="title_activity_import_file">Import File Activity</string>
     <string name="cant_read_external_storage">Can\'t_read_external_storage</string>
-    
+    <string name="translate_online">Translate online?</string>
+    <string name="choose_lang">Choose languages</string>
+
 
 </resources>

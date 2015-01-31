@@ -1,15 +1,10 @@
 package drankoDmitry.learningcards;
 
-import java.util.ArrayList;
-
-import drankoDmitry.learningcards.Deck.Card;
-import drankoDmitry.learningcards.Deck.OrderType;
-import drankoDmitry.learningcards.R;
-import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -28,6 +23,10 @@ import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+
+import drankoDmitry.learningcards.Deck.OrderType;
 
 public class MainActivity extends Activity {
 
@@ -104,7 +103,6 @@ public class MainActivity extends Activity {
 	            	   Log.d("check",""+rg.getCheckedRadioButtonId());
 	            	   if (newOrder!=order) {
 	            		   order = newOrder;
-	            		   Log.d("order", order.name());
 	            		   deck.save();
 	            		   deck = new Deck(currentTag, order, MainActivity.this);
 	            		   showNextCard();
@@ -128,14 +126,14 @@ public class MainActivity extends Activity {
 				int arg2, long arg3) {
 			String newT = null;
 			if (arg2!=0) {
-				 newT = arg0.getSelectedItem().toString();
-			}
-			if (newT!=currentTag) {
-				currentTag = newT;	
-				deck.save();
-				deck = new Deck(newT, order, MainActivity.this);
-	        	showNextCard();
-			}
+                newT = arg0.getSelectedItem().toString();
+                if (!newT.equals(currentTag)) {
+                    currentTag = newT;
+                    deck.save();
+                    deck = new Deck(newT, order, MainActivity.this);
+                    showNextCard();
+                }
+            }
 		}
 
 		@Override
@@ -149,8 +147,8 @@ public class MainActivity extends Activity {
 		
 		@Override
 		public void onClick(View v) {
-			currentCard.quality++;
-			showNextCard();
+            currentCard.setBetterQuality(MainActivity.this);
+            showNextCard();
 		}
 	});
 	buttonIncorrect = (Button) findViewById(R.id.button_incorrect);
@@ -158,8 +156,8 @@ public class MainActivity extends Activity {
 		
 		@Override
 		public void onClick(View v) {
-			currentCard.quality--;
-			showNextCard();
+            currentCard.setWorseQuality(MainActivity.this);
+            showNextCard();
 		}
 	});
 	
@@ -174,10 +172,10 @@ public class MainActivity extends Activity {
 					public boolean onSingleTapConfirmed(MotionEvent e) {
 						
 						if (!invert) {
-							tvTranslation.setText(currentCard.translation);
-						} else {
-							tvTranslation.setText(currentCard.word);
-						}
+                            tvTranslation.setText(currentCard.getTranslation());
+                        } else {
+                            tvTranslation.setText(currentCard.getWord());
+                        }
 						return true;
 					}
 					@Override
@@ -186,21 +184,21 @@ public class MainActivity extends Activity {
 					    LayoutInflater inflater = MainActivity.this.getLayoutInflater();
 					    View view = inflater.inflate(R.layout.edit_card_dialog, null);
 					    d_word = (EditText) view.findViewById(R.id.word);
-					    d_word.setText(currentCard.word);
-						d_translation = (EditText) view.findViewById(R.id.translation);
-						d_translation.setText(currentCard.translation);
-						d_tag = (EditText) view.findViewById(R.id.tag);
-						d_tag.setText(currentCard.tag);
-						d_quality = (EditText) view.findViewById(R.id.quality);
-						d_quality.setText(""+currentCard.quality);
-					    builder.setView(view)
+                        d_word.setText(currentCard.getWord());
+                        d_translation = (EditText) view.findViewById(R.id.translation);
+                        d_translation.setText(currentCard.getTranslation());
+                        d_tag = (EditText) view.findViewById(R.id.tag);
+                        d_tag.setText(currentCard.getTag());
+                        d_quality = (EditText) view.findViewById(R.id.quality);
+                        d_quality.setText("" + currentCard.getQuality());
+                        builder.setView(view)
 					           .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 					               @Override
 					               public void onClick(DialogInterface dialog, int id) {
 					            	   Log.d("dialog","ok");
-					            	  deck.editCard(currentCard.id, d_word.getText().toString(), d_translation.getText().toString(), d_tag.getText().toString(), Integer.parseInt(d_quality.getText().toString()));
-					            	  if (d_tag.equals(currentCard.tag)) {
-					            		  refreshCurrentCard();
+                                       currentCard.editCard(d_word.getText().toString(), d_translation.getText().toString(), d_tag.getText().toString(), Integer.parseInt(d_quality.getText().toString()), MainActivity.this);
+                                       if (d_tag.getText().toString().equals(currentCard.getTag())) {
+                                           refreshCurrentCard();
 					            	  } else {
 					            		  refreshTags();
 					            		  deck.save();
@@ -270,10 +268,10 @@ public class MainActivity extends Activity {
 	
 	private void refreshCurrentCard() {
 		if (invert) {
-			tvWord.setText(currentCard.translation);
-		} else {
-			tvWord.setText(currentCard.word);
-		}
+            tvWord.setText(currentCard.getTranslation());
+        } else {
+            tvWord.setText(currentCard.getWord());
+        }
 		tvTranslation.setText("");
 	}
 
